@@ -1,27 +1,34 @@
 package objects;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import framework.GameObject;
 import framework.ObjectID;
+import framework.Texture;
+import window.Animation;
+import window.Game;
 import window.Handler;
 
 public class Schnitzel extends GameObject {
 	
-	private Color color = Color.orange;
 	private boolean hit;
+	Texture texture = Game.getTextureInstance();
 	private Handler handler;
+	
+	//Animations
+	private Animation schnitzelrotation;
 	
 	public Schnitzel(float x, float y, float z, Handler handler, ObjectID id) {
 		super(x, y, z, id);
-		this.setGravity(0.1f);
+		this.setGravity(0);
 		this.setWidth(50);
 		this.setHeight(50);
-		this.setVelY(1);
+		this.setVelY(0);
 		this.handler = handler;
+		
+		schnitzelrotation = new Animation(6, texture.schnitzel[0], texture.schnitzel[1], texture.schnitzel[2], texture.schnitzel[3]);
 	}
 
 	@Override
@@ -38,12 +45,13 @@ public class Schnitzel extends GameObject {
 		}
 		
 		if(hit){
-			color = Color.GRAY;
 			velX = 0;
 			velY = 2;
 		}
 		
 		Collision(object);
+		
+		schnitzelrotation.runAnimation();
 	}
 	
 	private void Collision(LinkedList<GameObject> object){
@@ -51,7 +59,7 @@ public class Schnitzel extends GameObject {
 			GameObject tempObject = handler.object.get(i);
 			
 			if(tempObject.getID() == ObjectID.Shot){
-				if(getBounds().intersects(tempObject.getBounds()) && tempObject.getZ() == -254){
+				if(getBounds().intersects(tempObject.getBounds()) && tempObject.getZ() == -255){
 					this.hit = true;
 				}
 			}
@@ -60,9 +68,8 @@ public class Schnitzel extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
-		g.setColor(color);
-		g.fillRoundRect((int)x, (int)y, (int)width, (int)height, 40, 40);
-		
+		schnitzelrotation.drawAnimation(g, (int)x, (int)y);
+		//g.drawImage(texture.schnitzel[0], (int)x, (int)y, null);
 	}
 
 	@Override

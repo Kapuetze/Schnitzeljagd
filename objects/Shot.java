@@ -7,12 +7,14 @@ import java.util.LinkedList;
 
 import framework.GameObject;
 import framework.ObjectID;
+import framework.Texture;
+import window.Game;
 import window.Handler;
 
 public class Shot extends GameObject  {
 	
 	private Color color;
-	
+	Texture texture = Game.getTextureInstance();
 	private Handler handler;
 	
 	public Shot(float x, float y, float z, Handler handler, ObjectID id) {
@@ -52,7 +54,7 @@ public class Shot extends GameObject  {
 			GameObject tempObject = handler.object.get(i);
 			
 			if(tempObject.getID() == ObjectID.Schnitzel){
-				if(getBounds().intersects(tempObject.getBounds()) && tempObject.getZ() == -254){
+				if(getBounds().intersects(tempObject.getBounds()) && tempObject.getZ() == -255){
 					handler.removeObject(this);
 				}
 			}

@@ -4,9 +4,14 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 import framework.KeyInput;
 import framework.MouseInput;
+import framework.ObjectID;
+import framework.Texture;
+import objects.Block;
+import objects.Schnitzel;
 
 
 public class Game extends Canvas implements Runnable {
@@ -16,20 +21,30 @@ public class Game extends Canvas implements Runnable {
 	private boolean running = false;
 	private Thread thread;
 	
+	private BufferedImage level = null;
+	
 	public static int WIDTH, HEIGHT;
 	
 	Handler handler;
+	static Texture texture;
 	
 	private void init(){
 		handler = new Handler();
 		
 		WIDTH = getWidth();
 		HEIGHT = getHeight();
+				
+		texture = new Texture();
 		
-		handler.createLevel();
-		handler.createTargets();
+		
 		this.addKeyListener(new KeyInput(handler));
 		this.addMouseListener(new MouseInput(handler));
+		
+		//Load Level
+		BufferedImageLoader loader = new BufferedImageLoader();
+		level = loader.loadImage("/level.png");
+		
+		loadLevel(level); //load level from level texture
 	}
 	
 	public synchronized void start(){
@@ -104,6 +119,37 @@ public class Game extends Canvas implements Runnable {
 
 	private void update() {
 		handler.update();
+	}
+	
+	private void loadLevel(BufferedImage image){
+		int w = image.getWidth();
+		int h = image.getHeight();
+		
+		//loop through every single pixel of the level texture
+		for(int xi = 0; xi < h; xi++){
+			for(int yi = 0; yi < w; yi++){
+				int pixel = image.getRGB(xi,  yi);
+				
+				int red = (pixel >> 16) & 0xff;
+				int green = (pixel >> 8) & 0xff;
+				int blue = (pixel) & 0xff;
+				
+				//white pixel -> creates level structure
+				if(red == 255 && green == 255 & blue == 255){
+					handler.addObject(new Block(xi *32, yi *32, 0, 0, ObjectID.Block));
+				}
+				if(red == 0 && green == 100 & blue == 100){
+					handler.addObject(new Block(xi *32, yi *32, 0, 1, ObjectID.Block));
+				}
+				if(red == 255 && green == 200 & blue == 0){
+					handler.addObject(new Schnitzel(xi *32, yi *32, 0, handler, ObjectID.Block));
+				}
+			}
+		}
+	}
+	
+	public static Texture getTextureInstance(){
+		return texture;
 	}
 
 	public static void main(String[] args){

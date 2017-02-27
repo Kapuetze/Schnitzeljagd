@@ -35,15 +35,6 @@ public class Handler {
 		this.object.remove(object);
 	}
 	
-	public void createLevel(){
-		
-		addObject(new Schnitzel(10, 10, -254, this, ObjectID.Schnitzel));
-		
-		for(int xx = 0; xx < Game.WIDTH+32; xx += 32){
-			addObject(new Block(xx, Game.HEIGHT-32, 0, ObjectID.Block));
-		}
-	}
-	
 	public void createTargets(){
 		
 		Targets targets = new Targets();
