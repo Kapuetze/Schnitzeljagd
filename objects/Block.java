@@ -12,9 +12,9 @@ import window.Game;
 public class Block extends GameObject{
 
 	Texture texture = Game.getTextureInstance();
-	private int blocktype;
+	private BlockID blocktype;
 	
-	public Block(float x, float y, float z, int blocktype, ObjectID id) {
+	public Block(float x, float y, float z, BlockID blocktype, ObjectID id) {
 		super(x, y, z, id);
 		this.blocktype = blocktype;
 	}
@@ -24,12 +24,15 @@ public class Block extends GameObject{
 	}
 
 	public void render(Graphics g) {
-		if(blocktype == 0){
-			g.drawImage(texture.block[0], (int)x, (int)y, null);
-		}
-		if(blocktype == 1){
-			g.drawImage(texture.block[1], (int)x, (int)y, null);
-		}
+		
+	
+			if(blocktype == BlockID.KitchenTileGray){
+				g.drawImage(texture.block[0], (int)x, (int)y, null);
+			}
+			if(blocktype == BlockID.KitchenTileWhite){
+				g.drawImage(texture.block[1], (int)x, (int)y, null);
+			}
+		
 	}
 
 	public Rectangle getBounds() {

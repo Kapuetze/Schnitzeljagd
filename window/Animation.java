@@ -33,20 +33,15 @@ public class Animation {
 		}
 	}
 	
+	public void pauseAnimation(){
+		index++;
+		if(index > speed){
+			index = 0;
+			nextFrame();
+		}
+	}
+	
 	private void nextFrame(){
-		/*
-		for(int i = 0; i < frames; i++){
-			if(count == i){
-				currentImg = images[i];
-			}
-		}
-		
-		count++;
-		
-		if(count < frames){
-			count = 0;
-		}
-		*/
 		
 		currentImg = images[count%frames];
 		count++;

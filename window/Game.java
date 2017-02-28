@@ -5,13 +5,18 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import framework.KeyInput;
 import framework.MouseInput;
 import framework.ObjectID;
 import framework.Texture;
 import objects.Block;
+import objects.BlockID;
 import objects.Schnitzel;
+import objects.TargetHandler;
 
 
 public class Game extends Canvas implements Runnable {
@@ -26,15 +31,26 @@ public class Game extends Canvas implements Runnable {
 	public static int WIDTH, HEIGHT;
 	
 	Handler handler;
+	TargetHandler targethandler;
 	static Texture texture;
+	static Camera camera;
+	
+	
+	final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor(); //used to spawn targets every second
+
 	
 	private void init(){
 		handler = new Handler();
+		targethandler = new TargetHandler(handler);
 		
 		WIDTH = getWidth();
 		HEIGHT = getHeight();
 				
 		texture = new Texture();
+		camera = new Camera(0,0);
+		
+		executorService.scheduleAtFixedRate(targethandler::spawnTarget, 0, 1, TimeUnit.SECONDS); //call spawnTarget() every second
+
 		
 		
 		this.addKeyListener(new KeyInput(handler));
@@ -108,7 +124,7 @@ public class Game extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		
 		// We draw our contents here
-		g.setColor(Color.black);
+		g.setColor(Color.white);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 	
 		handler.render(g);
@@ -118,6 +134,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void update() {
+		targethandler.update();
 		handler.update();
 	}
 	
@@ -136,10 +153,10 @@ public class Game extends Canvas implements Runnable {
 				
 				//white pixel -> creates level structure
 				if(red == 255 && green == 255 & blue == 255){
-					handler.addObject(new Block(xi *32, yi *32, 0, 0, ObjectID.Block));
+					handler.addObject(new Block(xi *32, yi *32, 0, BlockID.KitchenTileGray, ObjectID.Block));
 				}
 				if(red == 0 && green == 100 & blue == 100){
-					handler.addObject(new Block(xi *32, yi *32, 0, 1, ObjectID.Block));
+					handler.addObject(new Block(xi *32, yi *32, 0, BlockID.KitchenTileWhite, ObjectID.Block));
 				}
 				if(red == 255 && green == 200 & blue == 0){
 					handler.addObject(new Schnitzel(xi *32, yi *32, 0, handler, ObjectID.Block));
@@ -150,6 +167,10 @@ public class Game extends Canvas implements Runnable {
 	
 	public static Texture getTextureInstance(){
 		return texture;
+	}
+	
+	public static Camera getMainCamera(){
+		return camera;
 	}
 
 	public static void main(String[] args){

@@ -4,26 +4,35 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 
 import framework.GameObject;
-import framework.ObjectID;
-import objects.*;
 
 public class Handler {
 
 	public LinkedList<GameObject> object = new LinkedList<GameObject>();
 	
-	private GameObject tempObject;
+	private GameObject tempobject;
 	
 	public void update(){
 		for(int i = 0; i < object.size(); i++){
-			tempObject = object.get(i);
-			tempObject.update(object);
+			tempobject = object.get(i);
+			tempobject.update(object);
 		}
 	}
 	
 	public void render(Graphics g){
+		
 		for(int i = 0; i < object.size(); i++){
-			tempObject = object.get(i);
-			tempObject.render(g);
+			tempobject = object.get(i);
+			
+			//cull objects outside the screen
+			if(!(tempobject.getX() > -Game.getMainCamera().getX() + Game.WIDTH || 
+				(tempobject.getX() < -Game.getMainCamera().getX() -32 || 
+				(tempobject.getY() > -Game.getMainCamera().getY() + Game.HEIGHT || 
+				tempobject.getY() < -Game.getMainCamera().getY() -32)))){
+					tempobject.render(g);
+			}
+			else{
+				
+			}
 		}
 	}
 	
@@ -35,18 +44,4 @@ public class Handler {
 		this.object.remove(object);
 	}
 	
-	public void createTargets(){
-		
-		Targets targets = new Targets();
-		float tx = 300;
-		float ty = 300;
-		
-		if(targets.size() < 2){
-			targets.add(new Schnitzel(tx, ty, -254, this, ObjectID.Schnitzel));
-			addObject(targets.getLast());
-			System.out.println("Target created.");
-		}
-		
-		targets.getLast().setVelX(5);
-	}
 }

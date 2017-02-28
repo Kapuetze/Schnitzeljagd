@@ -1,11 +1,13 @@
 package window;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
 public class Window {
 
+	@SuppressWarnings("deprecation")
 	public Window(int w, int h, String title, Game game){
 		/** create Window here **/
 		
@@ -20,6 +22,7 @@ public class Window {
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
+		frame.setCursor(Cursor.CROSSHAIR_CURSOR);
 		
 		game.start();
 	}

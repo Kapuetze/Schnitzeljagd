@@ -11,6 +11,15 @@ import window.Animation;
 import window.Game;
 import window.Handler;
 
+/**
+* The Schnitzel class defines an object which can be shot at with the shot object.
+*
+* @author  Jonas Berger
+* @version 1.0
+* @since   28.02.2017
+* @see Shot
+*/
+
 public class Schnitzel extends GameObject {
 	
 	private boolean hit;
@@ -20,12 +29,52 @@ public class Schnitzel extends GameObject {
 	//Animations
 	private Animation schnitzelrotation;
 	
+	/**
+	 * Creates a Schnitzel target object, width and height is set to 50.
+	 * Defines an animation for the Schnitzel from texture.schnitzel[0]-[3]
+	 *
+	 * @param  x	The x coordinate
+	 * @param  y	The y coordinate
+	 * @param  z	The z coordinate
+	 * @param  handler	The handler instance used to handle collision detection
+	 * @param  id	ObjectID of the created object
+	 * @see	ObjectID
+	 * @see Handler
+	 */
 	public Schnitzel(float x, float y, float z, Handler handler, ObjectID id) {
 		super(x, y, z, id);
 		this.setGravity(0);
 		this.setWidth(50);
 		this.setHeight(50);
-		this.setVelY(0);
+		this.handler = handler;
+		
+		schnitzelrotation = new Animation(6, texture.schnitzel[0], texture.schnitzel[1], texture.schnitzel[2], texture.schnitzel[3]);
+	}
+	
+	/**
+	 * Creates a Schnitzel target object, width and height is set to 50.
+	 * Defines an animation for the Schnitzel from texture.schnitzel[0]-[3]
+	 *
+	 * @param  x	The x coordinate
+	 * @param  y	The y coordinate
+	 * @param  z	The z coordinate
+	 * @param  velX	The velocity in x direction
+	 * @param  velY	The velocity in y direction
+	 * @param  velZ	The velocity in z direction
+	 * @param  handler	The handler instance used to handle collision detection
+	 * @param  id	ObjectID of the created object
+	 * @see	ObjectID
+	 * @see Handler
+	 */
+	public Schnitzel(float x, float y, float z, float velX, float velY, float velZ, Handler handler, ObjectID id) {
+		super(x, y, z, id);
+		this.setGravity(0);
+		this.setWidth(50);
+		this.setHeight(50);
+
+		this.setVelX(velX);
+		this.setVelY(velY);
+		this.setVelZ(velZ);
 		this.handler = handler;
 		
 		schnitzelrotation = new Animation(6, texture.schnitzel[0], texture.schnitzel[1], texture.schnitzel[2], texture.schnitzel[3]);
@@ -54,6 +103,9 @@ public class Schnitzel extends GameObject {
 		schnitzelrotation.runAnimation();
 	}
 	
+	/**
+	 * Handles collision for Schnitzel objects.
+	 */
 	private void Collision(LinkedList<GameObject> object){
 		for (int i = 0; i < handler.object.size(); i++){
 			GameObject tempObject = handler.object.get(i);

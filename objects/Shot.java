@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import framework.GameObject;
 import framework.ObjectID;
 import framework.Texture;
+import window.Animation;
 import window.Game;
 import window.Handler;
 
@@ -16,6 +17,9 @@ public class Shot extends GameObject  {
 	private Color color;
 	Texture texture = Game.getTextureInstance();
 	private Handler handler;
+	private boolean flying = true;
+	
+	private Animation forkfly;
 	
 	public Shot(float x, float y, float z, Handler handler, ObjectID id) {
 		super(x, y, z, id);
@@ -23,6 +27,8 @@ public class Shot extends GameObject  {
 		this.setHeight(10);
 		this.setVelZ(-10);
 		this.handler = handler;
+		
+		forkfly = new Animation(4, texture.fork[0], texture.fork[1], texture.fork[2], texture.fork[3], texture.fork[4]);
 	}
 
 	@Override
@@ -35,17 +41,15 @@ public class Shot extends GameObject  {
 		if(z < -255){
 			velZ = 0;
 			z = -255;
+			flying = false;
 		}
 		
-		int alpha =  (int)z*(-1);
-		
-		color = new Color(255, 0, 0, alpha);
-		if(z == -250){
-			color = new Color(172, 92, 100, 255);
-		}
 		
 		Collision(object);
 		
+		if(flying){
+			forkfly.runAnimation();
+		}
 		//System.out.println("Z position of projectile: " + z);
 	}
 	
@@ -63,8 +67,7 @@ public class Shot extends GameObject  {
 
 	@Override
 	public void render(Graphics g) {
-		g.setColor(color);
-		g.fillOval((int)x, (int)y, (int)width, (int)height);
+		forkfly.drawAnimation(g, (int)x, (int)y);
 	}
 
 	@Override
