@@ -17,6 +17,7 @@ public class BufferedImageLoader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("Width:" + image.getWidth() + "Height" + image.getHeight());
 		return image;
 	}
 }

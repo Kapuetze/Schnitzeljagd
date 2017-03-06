@@ -36,7 +36,7 @@ public class MouseInput implements MouseListener {
 		int mx = e.getX();
 		int my = e.getY();
 		
-		handler.addObject(new Shot((int)mx - (int)2.5, (int)my - (int)2.5, 0, handler, ObjectID.Shot));
+		handler.addObject(new Shot((int)mx - (int)10, (int)my - (int)10, 0, handler, ObjectID.Shot));
 		
 	}
 

@@ -15,7 +15,7 @@ public class Texture {
 	
 	public BufferedImage[] block = new BufferedImage[2];
 	public BufferedImage[] schnitzel = new BufferedImage[4];
-	public BufferedImage[] fork = new BufferedImage[5];
+	public BufferedImage[] fork = new BufferedImage[8];
 	
 	public Texture(){
 		
@@ -44,12 +44,14 @@ public class Texture {
 		schnitzel[2] = schnitzels.getImage(3, 1, 64, 64);
 		schnitzel[3] = schnitzels.getImage(4, 1, 64, 64);
 		
-		fork[0] = forks.getImage(1, 1, 127, 128);
-		fork[1] = forks.getImage(2, 1, 127, 128);
-		fork[2] = forks.getImage(3, 1, 127, 128);
-		fork[3] = forks.getImage(4, 1, 127, 128);
-		fork[4] = forks.getImage(5, 1, 127, 128);
-		
+		fork[0] = forks.getImage(1, 1, 128, 128);
+		fork[1] = forks.getImage(2, 1, 128, 128);
+		fork[2] = forks.getImage(3, 1, 128, 128);
+		fork[3] = forks.getImage(4, 1, 128, 128);
+		fork[4] = forks.getImage(6, 1, 128, 128);
+		fork[5] = forks.getImage(7, 1, 128, 128);
+		fork[6] = forks.getImage(8, 1, 128, 128);
+		fork[7] = forks.getImage(1, 2, 128, 128);
 		
 	}
 }

@@ -12,7 +12,7 @@ public class SpriteSheet {
 	
 	public BufferedImage getImage(int col, int row, int width, int height){
 		//Returns a part of an image 
-		BufferedImage gimage = image.getSubimage((col*width) - width + 1, (row*height) - height, width, height);
+		BufferedImage gimage = image.getSubimage((col*width) - width, (row*height) - height, width, height);
 		return gimage;
 	}
 }
