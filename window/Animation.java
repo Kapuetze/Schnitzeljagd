@@ -15,7 +15,7 @@ public class Animation {
 	private BufferedImage currentImg;
 	
 	
-	public Animation(int speed, BufferedImage... args){
+	public Animation(int speed, BufferedImage[] args){
 		this.speed = speed;
 		images = new BufferedImage[args.length];
 		

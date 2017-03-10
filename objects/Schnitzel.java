@@ -61,7 +61,7 @@ public class Schnitzel extends GameObject {
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
 		
-		schnitzelrotation = new Animation(6, texture.schnitzel[0], texture.schnitzel[1], texture.schnitzel[2], texture.schnitzel[3]);
+		schnitzelrotation = new Animation(3, texture.schnitzel);
 	}
 	
 	/**
@@ -93,7 +93,7 @@ public class Schnitzel extends GameObject {
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
 		
-		schnitzelrotation = new Animation(6, texture.schnitzel[0], texture.schnitzel[1], texture.schnitzel[2], texture.schnitzel[3]);
+		schnitzelrotation = new Animation(3, texture.schnitzel);
 	}
 
 	@Override
@@ -170,10 +170,9 @@ public class Schnitzel extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		//Draw the Schnitzel rotation
-		schnitzelrotation.drawAnimation(g, (int)x -12, (int)y -12);
+		schnitzelrotation.drawAnimation(g, (int)x - 8, (int)y - 8, (int)width + 16, (int)height + 16);
 		//g.drawImage(texture.schnitzel[0], (int)x, (int)y, null);
 		g.setColor(Color.BLACK);
-		hitbox.draw(g);
 	}
 
 }

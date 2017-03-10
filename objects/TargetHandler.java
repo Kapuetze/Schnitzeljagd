@@ -32,7 +32,7 @@ public class TargetHandler {
 	
 	public TargetHandler(Handler handler){
 		targets = new LinkedList<GameObject>();
-		this.maxtargets = 10;
+		this.maxtargets = 5;
 		this.handler = handler;
 	}
 	
@@ -49,19 +49,67 @@ public class TargetHandler {
 	public void spawnTarget(){
 		if(targets.size() < maxtargets){
 			Random random = new Random();
-			int randX = random.nextInt(Game.WIDTH + 64) - 32;
-			int randY = random.nextInt(Game.WIDTH + 64) - 32;
-			int randVelX = random.nextInt(Game.WIDTH + 64) - 32;
-			int randVelY = random.nextInt(Game.WIDTH + 64) - 32;
 			
-			if(randX < 0 || randX > Game.WIDTH){
-				randY = random.nextInt(Game.HEIGHT);
-				randVelX = random.nextInt(2);
-				randVelY = random.nextInt(2);
+			int position = random.nextInt(4); // 0 = left, 1 = top, 2 = right, 3 = bot
+			
+			//get random object
+			TargetID targettype = TargetID.getRandomObject();
+			
+			int randY, randX, randVelX, randVelY;
+			float gravity;
+			
+			switch (position){
+				//LEFT
+				case 0: randX = -32;
+						randY = random.nextInt(Game.HEIGHT);
+						randVelX = random.nextInt(2) + 1;
+						randVelY = random.nextInt(2);
+						gravity = 0;
+						break;
+					
+				//TOP
+				case 1: randX = random.nextInt(Game.WIDTH);
+						randY = 0;
+						randVelX = random.nextInt(2);
+						randVelY = random.nextInt(1);
+						gravity = 0.05f;
+						break;
+				
+				//RIGHT
+				case 2: randX = Game.WIDTH + 32;
+						randY = random.nextInt(Game.HEIGHT);
+						randVelX = -random.nextInt(2) - 1;
+						randVelY = random.nextInt(2);
+						gravity = 0;
+						break;
+				
+				//BOT
+				case 3: randX = random.nextInt(Game.WIDTH);
+						randY = Game.HEIGHT - 32;
+						randVelX = random.nextInt(2);
+						randVelY = -random.nextInt(5) - 2;
+						gravity = 0.05f;
+						break;
+						
+				default: 	randX = 0;
+							randY = 0;
+							randVelX = 0;
+							randVelY = 0;
+							gravity = 0;
+							break;
+				
 			}
-			if(randY )
 			
-			targets.add(new Schnitzel(-32, random.nextInt(Game.HEIGHT), -255, 2, random.nextInt(2), 0, handler, ObjectID.Schnitzel));
+			
+			System.out.println("randX: " + randX);
+			System.out.println("randY: " + randY);
+			System.out.println("randVelX: " + randVelX);
+			System.out.println("randVelY: " + randVelY);
+			System.out.println("gravity: " + gravity);
+			
+			targets.add(new Schnitzel(randX, randY, -255, randVelX, randVelY, 0, handler, ObjectID.Schnitzel));
+			targets.getLast().setGravity(gravity);
+			//targets.add(new Schnitzel(-32, random.nextInt(Game.HEIGHT), -255, 2, random.nextInt(2), 0, handler, ObjectID.Schnitzel));
 			handler.addObject(targets.getLast());
 		}
 	}

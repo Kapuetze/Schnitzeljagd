@@ -49,7 +49,7 @@ public class Game extends Canvas implements Runnable {
 		texture = new Texture();
 		camera = new Camera(0,0);
 		
-		executorService.scheduleAtFixedRate(targethandler::spawnTarget, 0, 1, TimeUnit.SECONDS); //call spawnTarget() every second
+		executorService.scheduleAtFixedRate(targethandler::spawnTarget, 0, 500, TimeUnit.MILLISECONDS); //call spawnTarget() every second
 
 		
 		

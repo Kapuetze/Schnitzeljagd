@@ -30,7 +30,7 @@ public class Shot extends GameObject  {
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
 		
-		forkfly = new Animation(3, texture.fork[0], texture.fork[1], texture.fork[2], texture.fork[3], texture.fork[4], texture.fork[5], texture.fork[6], texture.fork[7]);
+		forkfly = new Animation(3, texture.fork);
 	}
 
 	@Override
@@ -70,7 +70,6 @@ public class Shot extends GameObject  {
 	public void render(Graphics g) {
 		forkfly.drawAnimation(g, (int)x - 64, (int)y -32);
 		g.setColor(Color.red);
-		hitbox.draw(g);
 	}
 
 }

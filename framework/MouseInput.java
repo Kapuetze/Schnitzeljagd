@@ -35,9 +35,16 @@ public class MouseInput implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
+		/*
+		long timeNow = System.currentTimeMillis();
+		long timeOfLastProjectile = 0;
+		long time = timeNow - timeOfLastProjectile ;
 		
-		handler.addObject(new Shot((int)mx - (int)10, (int)my - (int)10, 0, handler, ObjectID.Shot));
-		
+		if (time < 0 || time > 1000) {
+		*/
+			//timeOfLastProjectile = timeNow;
+			handler.addObject(new Shot((int)mx - (int)10, (int)my - (int)10, 0, handler, ObjectID.Shot));
+		//}
 	}
 
 	@Override
