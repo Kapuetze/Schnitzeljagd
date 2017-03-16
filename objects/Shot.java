@@ -17,7 +17,7 @@ public class Shot extends GameObject  {
 	Texture texture = Game.getTextureInstance();
 	private Handler handler;
 	private boolean flying = true;
-	
+		
 	private Animation forkfly;
 	
 	public Shot(float x, float y, float z, Handler handler, ObjectID id) {
@@ -48,6 +48,10 @@ public class Shot extends GameObject  {
 			flying = false;
 		}
 		
+		if(velZ == 0){
+			flying = false;
+		}
+		
 		
 		Collision(object);
 		
@@ -63,7 +67,22 @@ public class Shot extends GameObject  {
 	}
 	
 	private void Collision(LinkedList<GameObject> object){
-		
+		for (int i = 0; i < handler.objects.size(); i++){
+			GameObject tempobject = handler.objects.get(i);
+			
+			if(tempobject.getID() == ObjectID.Schnitzel){
+				if(getHitbox().intersects(tempobject.getHitbox())){
+					
+					//stop fork from flying and set y greater than Schnitzel.y to render it in front of Schnitzel
+					velZ = 0;
+					z = -299;
+					
+					//stop both the Shot and the Schnitzel from being rendered and used for collision detection
+					//handler.removeObject(tempobject); 
+					//handler.removeObject(this);
+				}
+			}
+		}
 	}
 
 	@Override

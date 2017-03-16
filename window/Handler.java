@@ -31,7 +31,6 @@ public class Handler {
 		      public int compare(final GameObject o1, final GameObject o2) {
 		          return Integer.compare((int)o1.getZ(), (int)o2.getZ());
 		      }
-	
 		  });
 		
 		for(int i = 0; i < objects.size(); i++){

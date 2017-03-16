@@ -1,7 +1,9 @@
 package objects;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.LinkedList;
 
 import framework.*;
@@ -35,6 +37,12 @@ public class Schnitzel extends GameObject {
 	 */
 	private Handler handler;
 	
+	/**
+	 * used for fading out the object, if it was hit
+	 */
+	private float alpha = 1f;
+
+	
 	
 	//Animations
 	private Animation schnitzelrotation;
@@ -59,7 +67,7 @@ public class Schnitzel extends GameObject {
 		this.setDepth(1);
 		this.handler = handler;
 		
-		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
+		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)30, (int)30, (int)depth));
 		
 		schnitzelrotation = new Animation(3, texture.schnitzel);
 	}
@@ -91,7 +99,7 @@ public class Schnitzel extends GameObject {
 		this.setVelZ(velZ);
 		this.handler = handler;
 		
-		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
+		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)30, (int)30, (int)depth));
 		
 		schnitzelrotation = new Animation(3, texture.schnitzel);
 	}
@@ -126,6 +134,7 @@ public class Schnitzel extends GameObject {
 			//stop if hit
 			velX = 0;
 			velY = 0;
+			z = -300;
 		}
 		
 		/*
@@ -159,9 +168,11 @@ public class Schnitzel extends GameObject {
 					//set to true if the object was a shot
 					this.hit = true;
 					
+										
 					//stop both the Shot and the Schnitzel from being rendered and used for collision detection
-					handler.removeObject(tempobject); 
-					handler.removeObject(this);
+					//handler.removeObject(tempobject); 
+					//handler.removeObject(this);
+					Game.getTargetHandlerInstance().removeTarget(this);
 				}
 			}
 		}
@@ -169,10 +180,12 @@ public class Schnitzel extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
+		//create graphics2D object
+		Graphics2D g2d = (Graphics2D) g;
+		//set alpha
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 		//Draw the Schnitzel rotation
-		schnitzelrotation.drawAnimation(g, (int)x - 8, (int)y - 8, (int)width + 16, (int)height + 16);
-		//g.drawImage(texture.schnitzel[0], (int)x, (int)y, null);
-		g.setColor(Color.BLACK);
+		schnitzelrotation.drawAnimation(g2d, (int)x - 8, (int)y - 8, (int)width + 16, (int)height + 16);
 	}
 
 }

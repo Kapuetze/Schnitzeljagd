@@ -127,4 +127,8 @@ public class TargetHandler {
 			
 		}
 	}
+	
+	public void removeTarget(GameObject object){
+		targets.remove(object);
+	}
 }

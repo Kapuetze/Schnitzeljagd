@@ -3,6 +3,8 @@ package window;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import javax.swing.Timer;
+
 public class Animation {
 
 	private int speed;
@@ -13,6 +15,8 @@ public class Animation {
 	
 	public BufferedImage[] images;
 	private BufferedImage currentImg;
+	
+	private float alpha = 1f;
 	
 	
 	public Animation(int speed, BufferedImage[] args){
@@ -54,4 +58,6 @@ public class Animation {
 	public void drawAnimation(Graphics g, int x, int y, int scaleX, int scaleY){
 		g.drawImage(currentImg, x, y, scaleX, scaleY, null);
 	}
+	
+
 }

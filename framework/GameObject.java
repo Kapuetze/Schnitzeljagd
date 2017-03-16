@@ -1,31 +1,90 @@
 package framework;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.Comparator;
 import java.util.LinkedList;
 
+/**
+ * The GameObject class provides a superclass from which other GameObjects can inherit
+ * to share a common design pattern.
+ * @author Jonas
+ *
+ */
 public abstract class GameObject{
 
+	/**
+	 * GameObject position
+	 */
 	protected float x, y, z;
+	
+	/**
+	 * GameObject velocity
+	 */
 	protected float velX, velY, velZ;
+	
+	/**
+	 * GameObject dimensions
+	 */
 	protected float width, height, depth;
+	
+	/**
+	 * GameObject gravity
+	 */
 	protected float gravity;
+	
+	/**
+	 * ID of the GameObject, used to identify the type
+	 */
 	protected ObjectID id;
+	
+	/**
+	 * Is the GameObject falling
+	 */
 	protected boolean falling = true;
+	
+	/**
+	 * Hitbox of the GameObject (used for collision detection)
+	 */
 	protected HitBox hitbox;
 	
+	/**
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @param z The z coordinate
+	 * @param id The ID coordinate
+	 */
 	public GameObject(float x, float y, float z, ObjectID id){
+		//populate position coordinates
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.id = id;
+		
+		//initiate Hitbox at (0,0,0) with size 0
 		this.hitbox = new HitBox(0,0,0,0,0,0);
 	}
 	
 
+	/**
+	 * Update the properties of the GameObject
+	 * @param object List of all GameObjects
+	 */
 	public abstract void update(LinkedList<GameObject> object);
+	
+	/**
+	 * Renders the GameObject to the screen
+	 * @param g Graphics object
+	 */
 	public abstract void render(Graphics g);
+
+	/**
+	 * Turns the object into a readable String format
+	 */
+	@Override
+	public String toString() {
+		return "GameObject [id=" + id + ", x=" + x + ", y=" + y + ", z=" + z + ", velX=" + velX + ", velY=" + velY
+				+ ", velZ=" + velZ + ", width=" + width + ", height=" + height + ", depth=" + depth + ", gravity="
+				+ gravity + ", falling=" + falling + ", hitbox=" + hitbox + "]";
+	}
 
 	/**
 	 * @return the x

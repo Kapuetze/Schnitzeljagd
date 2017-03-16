@@ -10,7 +10,7 @@ import window.Game;
 import window.Handler;
 
 /**
-* The Schnitzel class defines an object which can be hit by the shot object.
+* The Ketchup class defines an object which can be hit by the shot object.
 *
 * @author  Jonas Berger
 * @version 1.0

@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable {
 	public static int WIDTH, HEIGHT;
 	
 	Handler handler;
-	TargetHandler targethandler;
+	static TargetHandler targethandler;
 	static Texture texture;
 	static Camera camera;
 	
@@ -171,6 +171,10 @@ public class Game extends Canvas implements Runnable {
 	
 	public static Camera getMainCamera(){
 		return camera;
+	}
+	
+	public static TargetHandler getTargetHandlerInstance(){
+		return targethandler;
 	}
 
 	public static void main(String[] args){
