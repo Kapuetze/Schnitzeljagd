@@ -15,18 +15,16 @@ import window.Handler;
 public class Shot extends GameObject  {
 	
 	Texture texture = Game.getTextureInstance();
-	private Handler handler;
 	private boolean flying = true;
 		
 	private Animation forkfly;
 	
-	public Shot(float x, float y, float z, Handler handler, ObjectID id) {
+	public Shot(float x, float y, float z, ObjectID id) {
 		super(x, y, z, id);
 		this.setWidth(10);
 		this.setHeight(10);
 		this.setDepth(30);
 		this.setVelZ(-10);
-		this.handler = handler;
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
 		
@@ -70,7 +68,7 @@ public class Shot extends GameObject  {
 		for (int i = 0; i < handler.objects.size(); i++){
 			GameObject tempobject = handler.objects.get(i);
 			
-			if(tempobject.getID() == ObjectID.Schnitzel){
+			if(tempobject.getID() == ObjectID.Schnitzel || tempobject.getID() == ObjectID.Ketchup){
 				if(getHitbox().intersects(tempobject.getHitbox())){
 					
 					//stop fork from flying and set y greater than Schnitzel.y to render it in front of Schnitzel
@@ -88,7 +86,6 @@ public class Shot extends GameObject  {
 	@Override
 	public void render(Graphics g) {
 		forkfly.drawAnimation(g, (int)x - 64, (int)y -32);
-		g.setColor(Color.red);
 	}
 
 }

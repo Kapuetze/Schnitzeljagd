@@ -8,6 +8,7 @@ import framework.GameObject;
 import framework.ObjectID;
 import framework.Texture;
 import window.Game;
+import window.Handler;
 
 public class Block extends GameObject{
 
@@ -17,6 +18,7 @@ public class Block extends GameObject{
 	public Block(float x, float y, float z, BlockID blocktype, ObjectID id) {
 		super(x, y, z, id);
 		this.blocktype = blocktype;
+		
 	}
 
 	public void update(LinkedList<GameObject> object) {

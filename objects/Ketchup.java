@@ -31,9 +31,9 @@ public class Ketchup extends GameObject {
 	Texture texture = Game.getTextureInstance();
 	
 	/**
-	 * Handler for Collision detection, updating and rendering
+	 * The "Blood" showing when Ketchup was hit
 	 */
-	private Handler handler;
+	private ParticleSystem blood;
 	
 	
 	//Animations
@@ -51,15 +51,18 @@ public class Ketchup extends GameObject {
 	 * @see	ObjectID
 	 * @see Handler
 	 */
-	public Ketchup(float x, float y, float z, Handler handler, ObjectID id) {
+	public Ketchup(float x, float y, float z, ObjectID id) {
 		super(x, y, z, id);
 		this.setGravity(0);
 		this.setWidth(40);
 		this.setHeight(40);
 		this.setDepth(1);
-		this.handler = handler;
 		
-		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
+		
+		this.setHitbox(new HitBox((int)(x), (int)y, (int)z, (int)width, (int)height, (int)depth));
+		
+		//maxparticles should be 50 to have a smooth fountain
+		blood = new ParticleSystem(x + width/2, y, z, 50, ObjectID.ParticleSystem);
 		
 		ketchuphit = new Animation(3, texture.schnitzel);
 	}
@@ -79,7 +82,7 @@ public class Ketchup extends GameObject {
 	 * @see	ObjectID
 	 * @see Handler
 	 */
-	public Ketchup(float x, float y, float z, float velX, float velY, float velZ, Handler handler, ObjectID id) {
+	public Ketchup(float x, float y, float z, float velX, float velY, float velZ, ObjectID id) {
 		super(x, y, z, id);
 		this.setGravity(0);
 		this.setWidth(40);
@@ -89,11 +92,10 @@ public class Ketchup extends GameObject {
 		this.setVelX(velX);
 		this.setVelY(velY);
 		this.setVelZ(velZ);
-		this.handler = handler;
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
 		
-		ketchuphit = new Animation(3, texture.schnitzel);
+		//ketchuphit = new Animation(3, texture.schnitzel);
 	}
 
 	@Override
@@ -101,50 +103,12 @@ public class Ketchup extends GameObject {
 		
 		hitbox.update(this);
 		
-		//add velocity 
-		x += velX;
-		y += velY;
-		
-		//add gravity
-		if(falling){
-			velY += gravity;
-			
-			//max velocity
-			if(velY > 5){
-				velY = 5;
-			}
-		}
-		
-		//calculate Collision
 		Collision(object);
 		
-		if(!hit){
-			//run rotating animation as long as not hit
-			ketchuphit.runAnimation();
+		if(hit){
+			blood.start();
+			z = -300;
 		}
-		else{
-			//stop if hit
-			velX = 0;
-			velY = 0;
-		}
-		
-		/*
-		
-		float maxX = x + width;
-		float maxY = y + height;
-		float maxZ = z + depth;
-
-		
-		System.out.println("x: " + x);
-		System.out.println("y: " + y);
-		System.out.println("z: " + z);
-		System.out.println("width: " + width);
-		System.out.println("height: " + height);
-		System.out.println("depth: " + depth);
-		System.out.println("maxX: " + maxX);
-		System.out.println("maxY: " + maxY);
-		System.out.println("maxZ: " + maxZ);
-		*/
 	}
 	
 	/**
@@ -159,9 +123,11 @@ public class Ketchup extends GameObject {
 					//set to true if the object was a shot
 					this.hit = true;
 					
+										
 					//stop both the Shot and the Schnitzel from being rendered and used for collision detection
-					handler.removeObject(tempobject); 
-					handler.removeObject(this);
+					//handler.removeObject(tempobject); 
+					//handler.removeObject(this);
+					//Game.getTargetHandlerInstance().removeTarget(this);
 				}
 			}
 		}
@@ -170,9 +136,14 @@ public class Ketchup extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		//Draw the Schnitzel rotation
-		ketchuphit.drawAnimation(g, (int)x - 8, (int)y - 8, (int)width + 16, (int)height + 16);
+		//ketchuphit.drawAnimation(g, (int)x - 8, (int)y - 8, (int)width + 16, (int)height + 16);
 		//g.drawImage(texture.schnitzel[0], (int)x, (int)y, null);
-		g.setColor(Color.BLACK);
+		g.setColor(Color.red);
+		g.fillRect((int)(x), (int)(y), (int)width, (int)height);
+		g.setColor(Color.black);
+		g.drawRect((int)(x), (int)(y), (int)width, (int)height);
+		g.setColor(Color.BLUE);
+		hitbox.draw(g);
 	}
 
 }

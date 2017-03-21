@@ -15,6 +15,7 @@ import framework.ObjectID;
 import framework.Texture;
 import objects.Block;
 import objects.BlockID;
+import objects.Ketchup;
 import objects.Schnitzel;
 import objects.TargetHandler;
 
@@ -30,7 +31,7 @@ public class Game extends Canvas implements Runnable {
 	
 	public static int WIDTH, HEIGHT;
 	
-	Handler handler;
+	static Handler handler;
 	static TargetHandler targethandler;
 	static Texture texture;
 	static Camera camera;
@@ -53,8 +54,8 @@ public class Game extends Canvas implements Runnable {
 
 		
 		
-		this.addKeyListener(new KeyInput(handler));
-		this.addMouseListener(new MouseInput(handler));
+		this.addKeyListener(new KeyInput());
+		this.addMouseListener(new MouseInput());
 		
 		//Load Level
 		BufferedImageLoader loader = new BufferedImageLoader();
@@ -124,9 +125,12 @@ public class Game extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		
 		// We draw our contents here
+		
+		//default BG color is white
 		g.setColor(Color.white);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-	
+		
+		//tell the handler to render all gameobjects
 		handler.render(g);
 		
 		g.dispose();
@@ -134,7 +138,11 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void update() {
+		
+		//update all targets
 		targethandler.update();
+		
+		//update all gameobjects
 		handler.update();
 	}
 	
@@ -153,16 +161,17 @@ public class Game extends Canvas implements Runnable {
 				
 				//white pixel -> creates level structure
 				if(red == 255 && green == 255 & blue == 255){
-					handler.addObject(new Block(xi *32, yi *32, 0, BlockID.KitchenTileGray, ObjectID.Block));
+					new Block(xi *32, yi *32, 0, BlockID.KitchenTileGray, ObjectID.Block);
 				}
 				if(red == 0 && green == 100 & blue == 100){
-					handler.addObject(new Block(xi *32, yi *32, 0, BlockID.KitchenTileWhite, ObjectID.Block));
+					new Block(xi *32, yi *32, 0, BlockID.KitchenTileWhite, ObjectID.Block);
 				}
 				if(red == 255 && green == 200 & blue == 0){
-					handler.addObject(new Schnitzel(xi *32, yi *32, 0, handler, ObjectID.Block));
+					new Schnitzel(xi *32, yi *32, 0, ObjectID.Block);
 				}
 			}
 		}
+		
 	}
 	
 	public static Texture getTextureInstance(){
@@ -175,6 +184,10 @@ public class Game extends Canvas implements Runnable {
 	
 	public static TargetHandler getTargetHandlerInstance(){
 		return targethandler;
+	}
+	
+	public static Handler getHandlerInstance(){
+		return handler;
 	}
 
 	public static void main(String[] args){

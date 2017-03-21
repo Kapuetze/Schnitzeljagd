@@ -4,7 +4,11 @@ public enum ObjectID {
 
 	Player(),
 	Schnitzel(),
+	Steak(),
+	Ketchup(),
 	Shot(),
+	Particle(),
+	ParticleSystem(),
 	Block();
 
 }

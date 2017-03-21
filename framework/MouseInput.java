@@ -4,14 +4,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import objects.Shot;
+import window.Game;
 import window.Handler;
 
 public class MouseInput implements MouseListener {
 	
-	Handler handler;
+	Handler handler = Game.getHandlerInstance();
 	
-	public MouseInput(Handler handler){
-		this.handler = handler;
+	public MouseInput(){
+
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class MouseInput implements MouseListener {
 		if (time < 0 || time > 1000) {
 		*/
 			//timeOfLastProjectile = timeNow;
-			handler.addObject(new Shot((int)mx - (int)10, (int)my - (int)10, 0, handler, ObjectID.Shot));
+			new Shot((int)mx - (int)10, (int)my - (int)10, 0, ObjectID.Shot);
 		//}
 	}
 

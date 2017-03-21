@@ -1,7 +1,6 @@
 package objects;
 
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.LinkedList;
@@ -32,10 +31,6 @@ public class Schnitzel extends GameObject {
 	 */
 	Texture texture = Game.getTextureInstance();
 	
-	/**
-	 * Handler for Collision detection, updating and rendering
-	 */
-	private Handler handler;
 	
 	/**
 	 * used for fading out the object, if it was hit
@@ -59,13 +54,12 @@ public class Schnitzel extends GameObject {
 	 * @see	ObjectID
 	 * @see Handler
 	 */
-	public Schnitzel(float x, float y, float z, Handler handler, ObjectID id) {
+	public Schnitzel(float x, float y, float z, ObjectID id) {
 		super(x, y, z, id);
 		this.setGravity(0);
 		this.setWidth(40);
 		this.setHeight(40);
 		this.setDepth(1);
-		this.handler = handler;
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)30, (int)30, (int)depth));
 		
@@ -87,7 +81,7 @@ public class Schnitzel extends GameObject {
 	 * @see	ObjectID
 	 * @see Handler
 	 */
-	public Schnitzel(float x, float y, float z, float velX, float velY, float velZ, Handler handler, ObjectID id) {
+	public Schnitzel(float x, float y, float z, float velX, float velY, float velZ, ObjectID id) {
 		super(x, y, z, id);
 		this.setGravity(0);
 		this.setWidth(40);
@@ -97,7 +91,6 @@ public class Schnitzel extends GameObject {
 		this.setVelX(velX);
 		this.setVelY(velY);
 		this.setVelZ(velZ);
-		this.handler = handler;
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)30, (int)30, (int)depth));
 		
@@ -137,23 +130,6 @@ public class Schnitzel extends GameObject {
 			z = -300;
 		}
 		
-		/*
-		
-		float maxX = x + width;
-		float maxY = y + height;
-		float maxZ = z + depth;
-
-		
-		System.out.println("x: " + x);
-		System.out.println("y: " + y);
-		System.out.println("z: " + z);
-		System.out.println("width: " + width);
-		System.out.println("height: " + height);
-		System.out.println("depth: " + depth);
-		System.out.println("maxX: " + maxX);
-		System.out.println("maxY: " + maxY);
-		System.out.println("maxZ: " + maxZ);
-		*/
 	}
 	
 	/**

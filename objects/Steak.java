@@ -30,11 +30,6 @@ public class Steak extends GameObject {
 	 */
 	Texture texture = Game.getTextureInstance();
 	
-	/**
-	 * Handler for Collision detection, updating and rendering
-	 */
-	private Handler handler;
-	
 	
 	//Animations
 	private Animation steakanimation;
@@ -51,13 +46,12 @@ public class Steak extends GameObject {
 	 * @see	ObjectID
 	 * @see Handler
 	 */
-	public Steak(float x, float y, float z, Handler handler, ObjectID id) {
+	public Steak(float x, float y, float z, ObjectID id) {
 		super(x, y, z, id);
 		this.setGravity(0);
 		this.setWidth(40);
 		this.setHeight(40);
 		this.setDepth(1);
-		this.handler = handler;
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
 		
@@ -79,7 +73,7 @@ public class Steak extends GameObject {
 	 * @see	ObjectID
 	 * @see Handler
 	 */
-	public Steak(float x, float y, float z, float velX, float velY, float velZ, Handler handler, ObjectID id) {
+	public Steak(float x, float y, float z, float velX, float velY, float velZ, ObjectID id) {
 		super(x, y, z, id);
 		this.setGravity(0);
 		this.setWidth(40);
@@ -89,7 +83,6 @@ public class Steak extends GameObject {
 		this.setVelX(velX);
 		this.setVelY(velY);
 		this.setVelZ(velZ);
-		this.handler = handler;
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
 		
@@ -160,8 +153,8 @@ public class Steak extends GameObject {
 					this.hit = true;
 					
 					//stop both the Shot and the Schnitzel from being rendered and used for collision detection
-					handler.removeObject(tempobject); 
-					handler.removeObject(this);
+					tempobject.destroy();
+					this.destroy();
 				}
 			}
 		}

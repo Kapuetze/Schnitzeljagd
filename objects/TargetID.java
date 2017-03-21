@@ -4,7 +4,9 @@ import java.util.Random;
 
 public enum TargetID {
 	
-	Schnitzel();
+	Schnitzel(),
+	Ketchup(),
+	Steak();
 	
 	public static TargetID getRandomObject(){
 		Random random = new Random();

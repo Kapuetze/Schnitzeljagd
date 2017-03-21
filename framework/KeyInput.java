@@ -3,14 +3,15 @@ package framework;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import window.Game;
 import window.Handler;
 
 public class KeyInput extends KeyAdapter {
 
-	Handler handler;
+	Handler handler = Game.getHandlerInstance();
 	
-	public KeyInput(Handler handler){
-		this.handler = handler;
+	public KeyInput(){
+		
 	}
 	
 	public void keyPressed(KeyEvent e){

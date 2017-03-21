@@ -3,6 +3,9 @@ package framework;
 import java.awt.Graphics;
 import java.util.LinkedList;
 
+import window.Game;
+import window.Handler;
+
 /**
  * The GameObject class provides a superclass from which other GameObjects can inherit
  * to share a common design pattern.
@@ -47,6 +50,11 @@ public abstract class GameObject{
 	protected HitBox hitbox;
 	
 	/**
+	 * The Handler object
+	 */
+	protected Handler handler = Game.getHandlerInstance();
+	
+	/**
 	 * @param x The x coordinate
 	 * @param y The y coordinate
 	 * @param z The z coordinate
@@ -58,6 +66,9 @@ public abstract class GameObject{
 		this.y = y;
 		this.z = z;
 		this.id = id;
+		
+		//add object to handler
+		handler.addObject(this);
 		
 		//initiate Hitbox at (0,0,0) with size 0
 		this.hitbox = new HitBox(0,0,0,0,0,0);
@@ -75,6 +86,10 @@ public abstract class GameObject{
 	 * @param g Graphics object
 	 */
 	public abstract void render(Graphics g);
+	
+	public void destroy(){
+		handler.removeObject(this);
+	}
 
 	/**
 	 * Turns the object into a readable String format
