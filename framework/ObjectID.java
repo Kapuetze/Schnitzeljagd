@@ -9,6 +9,7 @@ public enum ObjectID {
 	Shot(),
 	Particle(),
 	ParticleSystem(),
+	Dashboard(),
 	Block();
 
 }

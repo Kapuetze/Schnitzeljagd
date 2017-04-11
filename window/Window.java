@@ -5,6 +5,8 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+import framework.GameState;
+
 public class Window {
 
 	@SuppressWarnings("deprecation")
@@ -25,5 +27,6 @@ public class Window {
 		frame.setCursor(Cursor.CROSSHAIR_CURSOR);
 		
 		game.start();
+		
 	}
 }

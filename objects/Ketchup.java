@@ -3,6 +3,7 @@ package objects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
 import framework.*;
 import window.Animation;
@@ -35,6 +36,11 @@ public class Ketchup extends GameObject {
 	 */
 	private ParticleSystem blood;
 	
+	/**
+	 * timer to destroy
+	 */
+	private int timer = 0;
+	
 	
 	//Animations
 	private Animation ketchuphit;
@@ -60,11 +66,15 @@ public class Ketchup extends GameObject {
 		
 		
 		this.setHitbox(new HitBox((int)(x), (int)y, (int)z, (int)width, (int)height, (int)depth));
+		this.setLifetime(20);
 		
 		//maxparticles should be 50 to have a smooth fountain
 		blood = new ParticleSystem(x + width/2, y, z, 50, ObjectID.ParticleSystem);
 		
 		ketchuphit = new Animation(3, texture.schnitzel);
+		
+		//call destroy() after delay
+		scheduler.schedule(this::readyToDestroy, 5, TimeUnit.SECONDS);
 	}
 	
 	/**
@@ -94,8 +104,12 @@ public class Ketchup extends GameObject {
 		this.setVelZ(velZ);
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
+		this.setLifetime(20);
 		
 		//ketchuphit = new Animation(3, texture.schnitzel);
+		
+		//call destroy() after delay
+		scheduler.schedule(this::readyToDestroy, 5, TimeUnit.SECONDS);
 	}
 
 	@Override
@@ -103,9 +117,12 @@ public class Ketchup extends GameObject {
 		
 		hitbox.update(this);
 		
+		//collision detection
 		Collision(object);
 		
 		if(hit){
+			
+			//start blood animation
 			blood.start();
 			z = -300;
 		}
@@ -123,11 +140,8 @@ public class Ketchup extends GameObject {
 					//set to true if the object was a shot
 					this.hit = true;
 					
-										
-					//stop both the Shot and the Schnitzel from being rendered and used for collision detection
-					//handler.removeObject(tempobject); 
-					//handler.removeObject(this);
-					//Game.getTargetHandlerInstance().removeTarget(this);
+					//call destroy() after delay
+					scheduler.schedule(this::destroy, lifetime, TimeUnit.SECONDS); 
 				}
 			}
 		}
@@ -144,6 +158,12 @@ public class Ketchup extends GameObject {
 		g.drawRect((int)(x), (int)(y), (int)width, (int)height);
 		g.setColor(Color.BLUE);
 		hitbox.draw(g);
+	}
+	
+	private void readyToDestroy(){
+		if(!hit){
+			this.destroy();
+		}
 	}
 
 }

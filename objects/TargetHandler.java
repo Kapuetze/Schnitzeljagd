@@ -137,24 +137,21 @@ public class TargetHandler {
 		for(int i = 0; i < targets.size(); i++){
 			GameObject tempobject = targets.get(i);
 			
-			if(!handler.contains(tempobject)){
-				targets.remove(tempobject);
-			}
+			//cull object outside of the screen
+			if((tempobject.getX() > -Game.getMainCamera().getX() + Game.WIDTH + 64|| 
+				(tempobject.getX() < -Game.getMainCamera().getX() -64 || 
+				(tempobject.getY() > -Game.getMainCamera().getY() + Game.HEIGHT +64 || 
+				tempobject.getY() < -Game.getMainCamera().getY() -64)))){
+					
+					//remove object from Targethandler
+					targets.remove(tempobject);
+					
+					//destroy Object
+					tempobject.destroy();
+				}
 			
 		}
 		
-		/*
-		Iterator<GameObject> iterator = targets.iterator();
-		
-		while (iterator.hasNext()) {
-			GameObject tempobject = iterator.next();
-			
-			if(!handler.contains(tempobject)){
-				targets.remove(tempobject);
-			}
-			
-		}
-		*/
 	}
 	
 	public void removeTarget(GameObject object){

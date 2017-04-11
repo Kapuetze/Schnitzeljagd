@@ -2,6 +2,8 @@ package framework;
 
 import java.awt.Graphics;
 import java.util.LinkedList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import window.Game;
 import window.Handler;
@@ -45,6 +47,16 @@ public abstract class GameObject{
 	protected boolean falling = true;
 	
 	/**
+	 * delay to destroy
+	 */
+	protected int lifetime;
+	
+	/**
+	 * Is the GameObject alive
+	 */
+	protected boolean alive = true;
+	
+	/**
 	 * Hitbox of the GameObject (used for collision detection)
 	 */
 	protected HitBox hitbox;
@@ -53,6 +65,11 @@ public abstract class GameObject{
 	 * The Handler object
 	 */
 	protected Handler handler = Game.getHandlerInstance();
+	
+	/**
+	 * Scheduler for destryoing
+	 */
+	protected ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	
 	/**
 	 * @param x The x coordinate
@@ -88,7 +105,7 @@ public abstract class GameObject{
 	public abstract void render(Graphics g);
 	
 	public void destroy(){
-		handler.removeObject(this);
+		alive = false;
 	}
 
 	/**
@@ -291,7 +308,30 @@ public abstract class GameObject{
 	public void setHitbox(HitBox hitbox) {
 		this.hitbox = hitbox;
 	}
-	
+
+
+	/**
+	 * @return the alive
+	 */
+	public boolean isAlive() {
+		return alive;
+	}
+
+
+	/**
+	 * @return the lifetime
+	 */
+	public int getLifetime() {
+		return lifetime;
+	}
+
+
+	/**
+	 * @param lifetime the lifetime to set
+	 */
+	public void setLifetime(int lifetime) {
+		this.lifetime = lifetime;
+	}
 
 	
 	

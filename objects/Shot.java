@@ -2,11 +2,16 @@ package objects;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import framework.GameObject;
 import framework.HitBox;
 import framework.ObjectID;
+import framework.TargetListener;
 import framework.Texture;
 import window.Animation;
 import window.Game;
@@ -14,8 +19,15 @@ import window.Handler;
 
 public class Shot extends GameObject  {
 	
+	/**
+	 * list of all the listeners added to this Object
+	 */
+	private ArrayList<TargetListener> listeners = new ArrayList<TargetListener>();
+	
 	Texture texture = Game.getTextureInstance();
 	private boolean flying = true;
+	
+	private boolean hit;
 		
 	private Animation forkfly;
 	
@@ -27,7 +39,9 @@ public class Shot extends GameObject  {
 		this.setVelZ(-10);
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
+		this.setLifetime(5);
 		
+		addListener(Game.getDashboardInstance());
 		forkfly = new Animation(3, texture.fork);
 	}
 
@@ -56,8 +70,9 @@ public class Shot extends GameObject  {
 		if(flying){
 			forkfly.runAnimation();
 		}
-		else{
-			//handler.removeObject(this);
+		else if (!hit){
+			//destroy shot after delay
+			scheduler.schedule(this::destroy, lifetime, TimeUnit.SECONDS); 
 		}
 		
 		
@@ -65,19 +80,28 @@ public class Shot extends GameObject  {
 	}
 	
 	private void Collision(LinkedList<GameObject> object){
-		for (int i = 0; i < handler.objects.size(); i++){
-			GameObject tempobject = handler.objects.get(i);
-			
-			if(tempobject.getID() == ObjectID.Schnitzel || tempobject.getID() == ObjectID.Ketchup){
-				if(getHitbox().intersects(tempobject.getHitbox())){
-					
-					//stop fork from flying and set y greater than Schnitzel.y to render it in front of Schnitzel
-					velZ = 0;
-					z = -299;
-					
-					//stop both the Shot and the Schnitzel from being rendered and used for collision detection
-					//handler.removeObject(tempobject); 
-					//handler.removeObject(this);
+		
+		//test if the shot has hit something yet
+		if(!hit){
+			for (int i = 0; i < handler.objects.size(); i++){
+				GameObject tempobject = handler.objects.get(i);
+				
+				if(tempobject.getID() == ObjectID.Schnitzel || tempobject.getID() == ObjectID.Ketchup){
+					if(getHitbox().intersects(tempobject.getHitbox())){
+						
+						//stop fork from flying and set y greater than Schnitzel.y to render it in front of Schnitzel
+						velZ = 0;
+						z = -299;
+						
+						hit = true;
+						
+						//notify listeners
+						for (TargetListener listener : listeners)
+				            listener.targetHit(tempobject);
+												
+						//call destroy() after delay
+						scheduler.schedule(this::destroy, tempobject.getLifetime(), TimeUnit.SECONDS); 
+					}
 				}
 			}
 		}
@@ -87,5 +111,14 @@ public class Shot extends GameObject  {
 	public void render(Graphics g) {
 		forkfly.drawAnimation(g, (int)x - 64, (int)y -32);
 	}
+	
+	 /**
+     * add a TargetListener to the Object
+     * @param toAdd
+     */
+    public void addListener(TargetListener listener) {
+        listeners.add(listener);
+    }
+
 
 }

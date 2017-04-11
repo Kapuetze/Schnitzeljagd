@@ -2,12 +2,17 @@ package framework;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import objects.Shot;
 import window.Game;
 import window.Handler;
 
 public class MouseInput implements MouseListener {
+	
+	private boolean shotready = true;
 	
 	Handler handler = Game.getHandlerInstance();
 	
@@ -36,22 +41,52 @@ public class MouseInput implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
-		/*
-		long timeNow = System.currentTimeMillis();
-		long timeOfLastProjectile = 0;
-		long time = timeNow - timeOfLastProjectile ;
+
+		switch(GameState.getState()){
+		case RUNNING:
+			
+			if(shotready){
+				new Shot((int)mx - (int)10, (int)my - (int)10, 0, ObjectID.Shot);
+				shotready = false;
+			}
+			
+			//limit projectiles
+			int timer = 1000;
+			ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+			scheduler.schedule(this::shotready, timer, TimeUnit.MILLISECONDS);
+			
+			break;
+			
+		case MENU:
+			//menu button handling
+			if (Game.getMenuInstance().getBtnresume().contains(mx, my)){
+				//turn start -> resume
+				Game.getMenuInstance().setFirststart(false);
+				
+				//start/resume the game
+				GameState.setState(GameState.RUNNING);
+			}
+			else if (Game.getMenuInstance().getBtnquit().contains(mx, my)){
+				//quit the game
+				System.exit(1);
+			}
+			break;
+			
+		default:
+			break;
 		
-		if (time < 0 || time > 1000) {
-		*/
-			//timeOfLastProjectile = timeNow;
-			new Shot((int)mx - (int)10, (int)my - (int)10, 0, ObjectID.Shot);
-		//}
+
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void shotready(){
+		shotready = true;
 	}
 
 }

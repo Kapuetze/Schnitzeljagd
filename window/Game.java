@@ -9,6 +9,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import framework.Dashboard;
+import framework.GameState;
 import framework.KeyInput;
 import framework.MouseInput;
 import framework.ObjectID;
@@ -35,6 +37,8 @@ public class Game extends Canvas implements Runnable {
 	static TargetHandler targethandler;
 	static Texture texture;
 	static Camera camera;
+	static Dashboard dashboard;
+	static Menu menu;
 	
 	
 	final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor(); //used to spawn targets every second
@@ -49,8 +53,10 @@ public class Game extends Canvas implements Runnable {
 				
 		texture = new Texture();
 		camera = new Camera(0,0);
+		dashboard = new Dashboard(1500, 25, 1, ObjectID.Dashboard);
+		menu = new Menu();
 		
-		executorService.scheduleAtFixedRate(targethandler::spawnTarget, 0, 500, TimeUnit.MILLISECONDS); //call spawnTarget() every second
+		executorService.scheduleAtFixedRate(targethandler::spawnTarget, 0, 500, TimeUnit.MILLISECONDS); //call spawnTarget() every half a second
 
 		
 		
@@ -92,6 +98,19 @@ public class Game extends Canvas implements Runnable {
 		
 		while(running){
 			
+			switch (GameState.getState()){
+				case PAUSED: 
+					pause();
+					break;
+					
+				case RUNNING: 
+					resume();
+					break;
+		
+				default:
+					break;
+			}
+			
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
@@ -114,36 +133,82 @@ public class Game extends Canvas implements Runnable {
 		
 	}
 	
-	private void render() {
-		// TODO Auto-generated method stub
-		BufferStrategy bs = this.getBufferStrategy();
-		if(bs == null){
-			this.createBufferStrategy(3); //set max buffer to 3
-			return;
+	/**
+	 * pause the Game
+	 */
+	private void pause(){
+		try {
+			synchronized(thread){
+				thread.wait();
+			}
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * resume the Game
+	 */
+	private void resume(){
+		synchronized(thread){
+			thread.notify();
+		}
+	}
+	
+	/**
+	 * stop the Game
+	 */
+	private void stop(){
 		
-		Graphics g = bs.getDrawGraphics();
+	}
+	
+	private void render() {
 		
-		// We draw our contents here
 		
-		//default BG color is white
-		g.setColor(Color.white);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+
+			// TODO Auto-generated method stub
+			BufferStrategy bs = this.getBufferStrategy();
+			if(bs == null){
+				this.createBufferStrategy(3); //set max buffer to 3
+				return;
+			}
+
+			Graphics g = bs.getDrawGraphics();
+
+			// We draw our contents here
+
+			//default BG color is white
+			g.setColor(Color.white);
+			g.fillRect(0, 0, WIDTH, HEIGHT);
+
+			//pause game if menu
+			if(GameState.getState() == GameState.RUNNING){
+				//tell the handler to render all gameobjects
+				handler.render(g);
+			}
+			else if (GameState.getState() == GameState.MENU){
+				menu.render(g);
+			}
+
+			g.dispose();
+			bs.show();
 		
-		//tell the handler to render all gameobjects
-		handler.render(g);
-		
-		g.dispose();
-		bs.show();
 	}
 
 	private void update() {
-		
-		//update all targets
-		targethandler.update();
-		
-		//update all gameobjects
-		handler.update();
+		//pause game if menu
+		if(GameState.getState() == GameState.RUNNING){
+			//update all targets
+			targethandler.update();
+			
+			//update all gameobjects
+			handler.update();
+		}
+		else if (GameState.getState() == GameState.MENU){
+			
+		}
 	}
 	
 	private void loadLevel(BufferedImage image){
@@ -174,23 +239,64 @@ public class Game extends Canvas implements Runnable {
 		
 	}
 	
+	/**
+	 * @return the Textures
+	 */
 	public static Texture getTextureInstance(){
 		return texture;
 	}
 	
+	/**
+	 * @return the Camera (not used)
+	 */
 	public static Camera getMainCamera(){
 		return camera;
 	}
 	
+	/**
+	 * @return the TargetHandler
+	 */
 	public static TargetHandler getTargetHandlerInstance(){
 		return targethandler;
 	}
 	
+	/**
+	 * @return the Handler
+	 */
 	public static Handler getHandlerInstance(){
 		return handler;
+	}
+	
+	/**
+	 * @return the Dashboard
+	 */
+	public static Dashboard getDashboardInstance(){
+		return dashboard;
+	}
+	
+	/**
+	 * @return the Menu
+	 */
+	public static Menu getMenuInstance(){
+		return menu;
+	}
+
+	/**
+	 * @return the running
+	 */
+	public boolean isRunning() {
+		return running;
+	}
+
+	/**
+	 * @param running the running to set
+	 */
+	public void setRunning(boolean running) {
+		this.running = running;
 	}
 
 	public static void main(String[] args){
 		new Window(1600, 800, "Schnitzeljagd", new Game());
+		
 	}
 }

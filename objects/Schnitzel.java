@@ -3,7 +3,11 @@ package objects;
 import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import framework.*;
 import window.Animation;
@@ -21,6 +25,7 @@ import window.Handler;
 
 public class Schnitzel extends GameObject {
 	
+	
 	/**
 	 * indicates if Schnitzel was hit by a Shot
 	 */
@@ -36,6 +41,7 @@ public class Schnitzel extends GameObject {
 	 * used for fading out the object, if it was hit
 	 */
 	private float alpha = 1f;
+	
 
 	
 	
@@ -62,6 +68,7 @@ public class Schnitzel extends GameObject {
 		this.setDepth(1);
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)30, (int)30, (int)depth));
+		this.setLifetime(3);
 		
 		schnitzelrotation = new Animation(3, texture.schnitzel);
 	}
@@ -93,6 +100,7 @@ public class Schnitzel extends GameObject {
 		this.setVelZ(velZ);
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)30, (int)30, (int)depth));
+		this.setLifetime(3);
 		
 		schnitzelrotation = new Animation(3, texture.schnitzel);
 	}
@@ -128,6 +136,8 @@ public class Schnitzel extends GameObject {
 			velX = 0;
 			velY = 0;
 			z = -300;
+			
+
 		}
 		
 	}
@@ -146,9 +156,10 @@ public class Schnitzel extends GameObject {
 					
 										
 					//stop both the Shot and the Schnitzel from being rendered and used for collision detection
-					//handler.removeObject(tempobject); 
-					//handler.removeObject(this);
 					Game.getTargetHandlerInstance().removeTarget(this);
+					
+					//call destroy() after delay
+					scheduler.schedule(this::destroy, lifetime, TimeUnit.SECONDS); 
 				}
 			}
 		}
@@ -163,5 +174,6 @@ public class Schnitzel extends GameObject {
 		//Draw the Schnitzel rotation
 		schnitzelrotation.drawAnimation(g2d, (int)x - 8, (int)y - 8, (int)width + 16, (int)height + 16);
 	}
+	
 
 }

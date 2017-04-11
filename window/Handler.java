@@ -10,29 +10,44 @@ import framework.ObjectID;
 
 public class Handler {
 
+	/**
+	 * holds all the GameObjects in the Game
+	 */
 	public LinkedList<GameObject> objects = new LinkedList<GameObject>();
 	
+	/**
+	 * temporary opbject
+	 */
 	private GameObject tempobject;
 	
+	/**
+	 * update all gameobjects
+	 */
 	public void update(){
+
+		//render objects in z-position order
+		Collections.sort(objects, new Comparator<GameObject>() {
+			@Override
+			public int compare(final GameObject o1, final GameObject o2) {
+				return Integer.compare((int)o1.getZ(), (int)o2.getZ());
+			}
+		});
+
 		for(int i = 0; i < objects.size(); i++){
 			tempobject = objects.get(i);
 			tempobject.update(objects);
 		}
-		
+
 		
 	}
 	
-	public void render(Graphics g){
+	/**
+	 * render all gameobjects
+	 * @param g the Graphics object
+	 */
+	public void render(Graphics g){	
 		
-		 //render objects in z-position order
-		 Collections.sort(objects, new Comparator<GameObject>() {
-		      @Override
-		      public int compare(final GameObject o1, final GameObject o2) {
-		          return Integer.compare((int)o1.getZ(), (int)o2.getZ());
-		      }
-		  });
-		
+		 //loop through all objects and render them, if they are inside of the screen
 		for(int i = 0; i < objects.size(); i++){
 			tempobject = objects.get(i);
 			
@@ -43,14 +58,11 @@ public class Handler {
 				tempobject.getY() < -Game.getMainCamera().getY() -64)))){
 					tempobject.render(g);
 			}
-			else{
-				if(tempobject.getID() == ObjectID.Schnitzel){
-					removeObject(tempobject);
-				}
-				
+			
+			//remove GameObject, if it is not alive
+			if(!tempobject.isAlive()){
+				removeObject(tempobject);
 			}
-			
-			
 		}
 	}
 	

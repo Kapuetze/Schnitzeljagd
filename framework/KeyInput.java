@@ -18,7 +18,15 @@ public class KeyInput extends KeyAdapter {
 		int key = e.getKeyCode();
 		
 		if(key == KeyEvent.VK_ESCAPE){
-			System.exit(1);
+			GameState.setState(GameState.MENU);
+		}
+
+		if(key == KeyEvent.VK_F1){
+			GameState.setState(GameState.RUNNING);
+		}
+
+		if(key == KeyEvent.VK_F2){
+			GameState.setState(GameState.RUNNING);
 		}
 	}
 	

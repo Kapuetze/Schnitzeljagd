@@ -9,8 +9,25 @@ public enum TargetID {
 	Steak();
 	
 	public static TargetID getRandomObject(){
+		
+		//percentages
+		int ketchupchance = 10;
+		int schnitzelchance = 60;
+		int steakchance = 30;
+		
 		Random random = new Random();
-		return values()[random.nextInt(values().length)];
+		int chance = random.nextInt(100);
+		
+		if (chance < ketchupchance){
+			return Ketchup;
+		}
+		else if(chance < steakchance){
+			return Steak;
+		}
+		else{
+			return Schnitzel;
+		}
+
 	}
 
 	
