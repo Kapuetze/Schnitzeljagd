@@ -27,11 +27,6 @@ public class Schnitzel extends GameObject {
 	
 	
 	/**
-	 * indicates if Schnitzel was hit by a Shot
-	 */
-	private boolean hit;
-	
-	/**
 	 * contains the Texture
 	 */
 	Texture texture = Game.getTextureInstance();
@@ -63,14 +58,14 @@ public class Schnitzel extends GameObject {
 	public Schnitzel(float x, float y, float z, ObjectID id) {
 		super(x, y, z, id);
 		this.setGravity(0);
-		this.setWidth(40);
-		this.setHeight(40);
+		this.setWidth(50);
+		this.setHeight(50);
 		this.setDepth(1);
 		
-		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)30, (int)30, (int)depth));
+		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)35, (int)35, (int)depth));
 		this.setLifetime(3);
 		
-		schnitzelrotation = new Animation(3, texture.schnitzel);
+		schnitzelrotation = new Animation(1, texture.schnitzel);
 	}
 	
 	/**
@@ -91,18 +86,18 @@ public class Schnitzel extends GameObject {
 	public Schnitzel(float x, float y, float z, float velX, float velY, float velZ, ObjectID id) {
 		super(x, y, z, id);
 		this.setGravity(0);
-		this.setWidth(40);
-		this.setHeight(40);
+		this.setWidth(50);
+		this.setHeight(50);
 		this.setDepth(1);
 
 		this.setVelX(velX);
 		this.setVelY(velY);
 		this.setVelZ(velZ);
 		
-		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)30, (int)30, (int)depth));
+		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)35, (int)35, (int)depth));
 		this.setLifetime(3);
 		
-		schnitzelrotation = new Animation(3, texture.schnitzel);
+		schnitzelrotation = new Animation(1, texture.schnitzel);
 	}
 
 	@Override

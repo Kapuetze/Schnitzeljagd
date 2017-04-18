@@ -22,22 +22,63 @@ import objects.Schnitzel;
 import objects.TargetHandler;
 
 
+/**
+ * Main Game class
+ * @author Jonas
+ *
+ */
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = -7516887150698980623L;
 	
+	/**
+	 * Is the Game running
+	 */
 	private boolean running = false;
+	
+	/**
+	 * Main Thread
+	 */
 	private Thread thread;
 	
+	/**
+	 * level Texture
+	 */
 	private BufferedImage level = null;
 	
+	/**
+	 * Width and Height of the window
+	 */
 	public static int WIDTH, HEIGHT;
 	
+	/**
+	 * Gameoject Handler
+	 */
 	static Handler handler;
+	
+	/**
+	 * Handler for targets
+	 */
 	static TargetHandler targethandler;
+	
+	/**
+	 * Holds textures
+	 */
 	static Texture texture;
+	
+	/**
+	 * Main camera
+	 */
 	static Camera camera;
+	
+	/**
+	 * Dashboard
+	 */
 	static Dashboard dashboard;
+	
+	/**
+	 * Main menu
+	 */
 	static Menu menu;
 	
 	
@@ -46,7 +87,7 @@ public class Game extends Canvas implements Runnable {
 	
 	private void init(){
 		handler = new Handler();
-		targethandler = new TargetHandler(handler);
+		targethandler = new TargetHandler();
 		
 		WIDTH = getWidth();
 		HEIGHT = getHeight();
@@ -125,7 +166,7 @@ public class Game extends Canvas implements Runnable {
 					
 			if(System.currentTimeMillis() - timer > 1000){
 				timer += 1000;
-				System.out.println("FPS: " + frames + " TICKS: " + updates);
+				//System.out.println("FPS: " + frames + " TICKS: " + updates);
 				frames = 0;
 				updates = 0;
 			}

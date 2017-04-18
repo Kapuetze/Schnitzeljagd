@@ -74,7 +74,7 @@ public class Dashboard extends GameObject implements TargetListener{
 			//add 2 points for steak
 			case Steak:
 				if(isKetchup){
-					score = score + 4;
+					score = score + 2 + 1 * ketchupMultiplier;
 				}
 				else{
 					score = score + 2;
@@ -115,13 +115,37 @@ public class Dashboard extends GameObject implements TargetListener{
 		g2d.setFont(new Font("Comic Sans MS", Font.PLAIN, 24));
 		//draw score
 		g2d.setColor(Color.BLACK);
-		g2d.drawString("Score: " + Integer.toString(score), (int)x, (int)y);
+		g2d.drawString("Score: " + Integer.toString(score), (int)x - 20, (int)y);
 		
 		//if Ketchup multiplier draw alert
 		if(isKetchup){
 			g2d.setColor(Color.RED);
 			g2d.drawString(ketchupAlert, Game.WIDTH - Game.WIDTH/2 - ketchupAlert.length()*7, 25);
 		}
+		
+	}
+
+	@Override
+	public void targetDestroyed(GameObject object) {
+		
+		switch(object.getID()){
+		//multiply points for ketchup
+		case Ketchup:
+			if (ketchupMultiplier == 1) {
+				isKetchup = false;
+			}
+			
+			ketchupMultiplier--;
+			
+			//change multiplier alert
+			ketchupAlert = ketchupAlertOriginal + " x" + Integer.toString(ketchupMultiplier);
+			break;
+		
+		default:
+			
+			break;
+	 
+	 }
 		
 	}
 

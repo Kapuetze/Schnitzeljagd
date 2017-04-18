@@ -45,15 +45,17 @@ public class MouseInput implements MouseListener {
 		switch(GameState.getState()){
 		case RUNNING:
 			
+			shotready = true;
+			
 			if(shotready){
 				new Shot((int)mx - (int)10, (int)my - (int)10, 0, ObjectID.Shot);
 				shotready = false;
 			}
 			
 			//limit projectiles
-			int timer = 1000;
-			ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-			scheduler.schedule(this::shotready, timer, TimeUnit.MILLISECONDS);
+			//int timer = 1000;
+			//ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+			//scheduler.schedule(this::shotready, timer, TimeUnit.MILLISECONDS);
 			
 			break;
 			

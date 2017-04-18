@@ -19,11 +19,6 @@ import window.Handler;
 
 public class Shot extends GameObject  {
 	
-	/**
-	 * list of all the listeners added to this Object
-	 */
-	private ArrayList<TargetListener> listeners = new ArrayList<TargetListener>();
-	
 	Texture texture = Game.getTextureInstance();
 	private boolean flying = true;
 	
@@ -41,7 +36,6 @@ public class Shot extends GameObject  {
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
 		this.setLifetime(5);
 		
-		addListener(Game.getDashboardInstance());
 		forkfly = new Animation(3, texture.fork);
 	}
 
@@ -54,9 +48,9 @@ public class Shot extends GameObject  {
 		y += velY;
 		z += velZ;
 		
-		if(z < -300){
+		if(z < -298){
 			velZ = 0;
-			z = -300;
+			z = -298;
 			flying = false;
 		}
 		
@@ -86,7 +80,7 @@ public class Shot extends GameObject  {
 			for (int i = 0; i < handler.objects.size(); i++){
 				GameObject tempobject = handler.objects.get(i);
 				
-				if(tempobject.getID() == ObjectID.Schnitzel || tempobject.getID() == ObjectID.Ketchup){
+				if(tempobject.getID() == ObjectID.Schnitzel || tempobject.getID() == ObjectID.Ketchup || tempobject.getID() == ObjectID.Steak){
 					if(getHitbox().intersects(tempobject.getHitbox())){
 						
 						//stop fork from flying and set y greater than Schnitzel.y to render it in front of Schnitzel
@@ -112,13 +106,5 @@ public class Shot extends GameObject  {
 		forkfly.drawAnimation(g, (int)x - 64, (int)y -32);
 	}
 	
-	 /**
-     * add a TargetListener to the Object
-     * @param toAdd
-     */
-    public void addListener(TargetListener listener) {
-        listeners.add(listener);
-    }
-
 
 }

@@ -101,17 +101,39 @@ public class ParticleSystem extends GameObject {
 		}
 	}
 	
+	/**
+	 * starts the particle system
+	 */
 	public void start(){
 		if(running == false){
 			running = true;
 		}
 	}
 	
+	/**
+	 * stops the particle system
+	 */
 	public void stop(){
 		if(running == true){
 			running = false;
 			particles.clear();
 		}
+	}
+
+
+	/**
+	 * @return the running
+	 */
+	public boolean isRunning() {
+		return running;
+	}
+
+
+	/**
+	 * @param running the running to set
+	 */
+	public void setRunning(boolean running) {
+		this.running = running;
 	}
 	
 }

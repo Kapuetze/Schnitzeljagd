@@ -17,5 +17,6 @@ public interface TargetListener {
 	 * @param targetID
 	 */
 	void targetHit(GameObject target);
+	void targetDestroyed(GameObject target);
 	
 }

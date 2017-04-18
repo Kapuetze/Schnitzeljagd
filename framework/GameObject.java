@@ -1,6 +1,7 @@
 package framework;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -47,6 +48,11 @@ public abstract class GameObject{
 	protected boolean falling = true;
 	
 	/**
+	 * Is the GameObject hit
+	 */
+	protected boolean hit = false;
+	
+	/**
 	 * delay to destroy
 	 */
 	protected int lifetime;
@@ -65,6 +71,11 @@ public abstract class GameObject{
 	 * The Handler object
 	 */
 	protected Handler handler = Game.getHandlerInstance();
+	
+	/**
+	 * list of all the listeners added to this Object
+	 */
+	protected ArrayList<TargetListener> listeners = new ArrayList<TargetListener>();
 	
 	/**
 	 * Scheduler for destryoing
@@ -89,6 +100,9 @@ public abstract class GameObject{
 		
 		//initiate Hitbox at (0,0,0) with size 0
 		this.hitbox = new HitBox(0,0,0,0,0,0);
+		
+		//add TargetListener
+		addListener(Game.getDashboardInstance());
 	}
 	
 
@@ -104,9 +118,20 @@ public abstract class GameObject{
 	 */
 	public abstract void render(Graphics g);
 	
+	/**
+	 * mark the GameObject as destroyed
+	 */
 	public void destroy(){
 		alive = false;
 	}
+	
+	 /**
+     * add a TargetListener to the Object
+     * @param toAdd
+     */
+    public void addListener(TargetListener listener) {
+        listeners.add(listener);
+    }
 
 	/**
 	 * Turns the object into a readable String format

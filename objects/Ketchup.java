@@ -22,11 +22,6 @@ import window.Handler;
 public class Ketchup extends GameObject {
 	
 	/**
-	 * indicates if Schnitzel was hit by a Shot
-	 */
-	private boolean hit;
-	
-	/**
 	 * contains the Texture
 	 */
 	Texture texture = Game.getTextureInstance();
@@ -66,7 +61,7 @@ public class Ketchup extends GameObject {
 		
 		
 		this.setHitbox(new HitBox((int)(x), (int)y, (int)z, (int)width, (int)height, (int)depth));
-		this.setLifetime(20);
+		this.setLifetime(10);
 		
 		//maxparticles should be 50 to have a smooth fountain
 		blood = new ParticleSystem(x + width/2, y, z, 50, ObjectID.ParticleSystem);
@@ -104,7 +99,7 @@ public class Ketchup extends GameObject {
 		this.setVelZ(velZ);
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
-		this.setLifetime(20);
+		this.setLifetime(10);
 		
 		//ketchuphit = new Animation(3, texture.schnitzel);
 		
@@ -141,8 +136,7 @@ public class Ketchup extends GameObject {
 					this.hit = true;
 					
 					//call destroy() after delay
-					scheduler.schedule(this::destroy, lifetime, TimeUnit.SECONDS); 
-				}
+					scheduler.schedule(this::destroy, lifetime, TimeUnit.SECONDS); 				}
 			}
 		}
 	}
@@ -160,10 +154,34 @@ public class Ketchup extends GameObject {
 		hitbox.draw(g);
 	}
 	
+	/**
+	 * destroy if not hit within 5 seconds
+	 */
 	private void readyToDestroy(){
 		if(!hit){
 			this.destroy();
 		}
+	}
+	
+	@Override
+	public void destroy(){
+		
+		
+		//stop blood
+		if(blood.isRunning()){
+			blood.stop();
+		}
+		
+		//remove from TargetHandler
+		Game.getTargetHandlerInstance().removeTarget(this);
+		
+		if(hit && alive){
+			//notify listeners
+			for (TargetListener listener : listeners)
+				listener.targetDestroyed(this);
+		}
+		
+		alive = false;
 	}
 
 }

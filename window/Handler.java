@@ -23,7 +23,7 @@ public class Handler {
 	/**
 	 * update all gameobjects
 	 */
-	public void update(){
+	public synchronized void update(){
 
 		//render objects in z-position order
 		Collections.sort(objects, new Comparator<GameObject>() {
@@ -35,7 +35,12 @@ public class Handler {
 
 		for(int i = 0; i < objects.size(); i++){
 			tempobject = objects.get(i);
-			tempobject.update(objects);
+			try {
+				tempobject.update(objects);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		
@@ -45,7 +50,7 @@ public class Handler {
 	 * render all gameobjects
 	 * @param g the Graphics object
 	 */
-	public void render(Graphics g){	
+	public synchronized void render(Graphics g){	
 		
 		 //loop through all objects and render them, if they are inside of the screen
 		for(int i = 0; i < objects.size(); i++){
@@ -56,7 +61,12 @@ public class Handler {
 				(tempobject.getX() < -Game.getMainCamera().getX() -64 || 
 				(tempobject.getY() > -Game.getMainCamera().getY() + Game.HEIGHT +64 || 
 				tempobject.getY() < -Game.getMainCamera().getY() -64)))){
-					tempobject.render(g);
+					try {
+						tempobject.render(g);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			}
 			
 			//remove GameObject, if it is not alive
@@ -70,7 +80,7 @@ public class Handler {
 	 * adds a GameObject to the handler
 	 * @param object	the GameObject
 	 */
-	public void addObject(GameObject object){
+	public synchronized void addObject(GameObject object){
 		objects.add(object);
 	}
 	
@@ -78,8 +88,13 @@ public class Handler {
 	 * removes a GameObject from the handler
 	 * @param object	the GameObject
 	 */
-	public void removeObject(GameObject object){
-		objects.remove(object);
+	public synchronized void removeObject(GameObject object){
+		try {
+			objects.remove(object);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -87,7 +102,7 @@ public class Handler {
 	 * @param object The GameObject
 	 * @return true if the object is inside the list, false if not
 	 */
-	public boolean contains(GameObject object){
+	public synchronized boolean contains(GameObject object){
 		return objects.contains(object);
 	}
 	

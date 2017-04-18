@@ -25,8 +25,11 @@ public class KeyInput extends KeyAdapter {
 			GameState.setState(GameState.RUNNING);
 		}
 
-		if(key == KeyEvent.VK_F2){
-			GameState.setState(GameState.RUNNING);
+		if(key == KeyEvent.VK_SPACE){
+			Game.getTargetHandlerInstance().printTargets();
+			System.out.println("------------------------------------------------");
+			System.out.println("");
+			System.out.println("");
 		}
 	}
 	

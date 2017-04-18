@@ -1,8 +1,13 @@
 package objects;
 
-import java.awt.Color;
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import framework.*;
 import window.Animation;
@@ -10,7 +15,7 @@ import window.Game;
 import window.Handler;
 
 /**
-* The Schnitzel class defines an object which can be hit by the shot object.
+* The Steak class defines an object which can be hit by the shot object.
 *
 * @author  Jonas Berger
 * @version 1.0
@@ -20,10 +25,6 @@ import window.Handler;
 
 public class Steak extends GameObject {
 	
-	/**
-	 * indicates if Schnitzel was hit by a Shot
-	 */
-	private boolean hit;
 	
 	/**
 	 * contains the Texture
@@ -31,12 +32,20 @@ public class Steak extends GameObject {
 	Texture texture = Game.getTextureInstance();
 	
 	
+	/**
+	 * used for fading out the object, if it was hit
+	 */
+	private float alpha = 1f;
+	
+
+	
+	
 	//Animations
-	private Animation steakanimation;
+	private Animation steakrotation;
 	
 	/**
-	 * Creates a Schnitzel target object, width and height is set to 50.
-	 * Defines an animation for the Schnitzel from texture.schnitzel[0]-[3]
+	 * Creates a Steak target object, width and height is set to 50.
+	 * Defines an animation for the Steak from texture.steak[0]-[3]
 	 *
 	 * @param  x	The x coordinate
 	 * @param  y	The y coordinate
@@ -53,14 +62,15 @@ public class Steak extends GameObject {
 		this.setHeight(40);
 		this.setDepth(1);
 		
-		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
+		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)30, (int)30, (int)depth));
+		this.setLifetime(3);
 		
-		steakanimation = new Animation(6, texture.schnitzel);
+		steakrotation = new Animation(2, texture.steak);
 	}
 	
 	/**
-	 * Creates a Schnitzel target object, width and height is set to 50.
-	 * Defines an animation for the Schnitzel from texture.schnitzel[0]-[3]
+	 * Creates a Steak target object, width and height is set to 50.
+	 * Defines an animation for the Steak from texture.steak[0]-[3]
 	 *
 	 * @param  x	The x coordinate
 	 * @param  y	The y coordinate
@@ -84,9 +94,10 @@ public class Steak extends GameObject {
 		this.setVelY(velY);
 		this.setVelZ(velZ);
 		
-		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
+		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)30, (int)30, (int)depth));
+		this.setLifetime(3);
 		
-		steakanimation = new Animation(6, texture.schnitzel);
+		steakrotation = new Animation(1, texture.steak);
 	}
 
 	@Override
@@ -113,35 +124,21 @@ public class Steak extends GameObject {
 		
 		if(!hit){
 			//run rotating animation as long as not hit
-			steakanimation.runAnimation();
+			steakrotation.runAnimation();
 		}
 		else{
 			//stop if hit
 			velX = 0;
 			velY = 0;
+			z = -300;
+			
+
 		}
 		
-		/*
-		
-		float maxX = x + width;
-		float maxY = y + height;
-		float maxZ = z + depth;
-
-		
-		System.out.println("x: " + x);
-		System.out.println("y: " + y);
-		System.out.println("z: " + z);
-		System.out.println("width: " + width);
-		System.out.println("height: " + height);
-		System.out.println("depth: " + depth);
-		System.out.println("maxX: " + maxX);
-		System.out.println("maxY: " + maxY);
-		System.out.println("maxZ: " + maxZ);
-		*/
 	}
 	
 	/**
-	 * Handles collision for Schnitzel objects.
+	 * Handles collision for Steak objects.
 	 */
 	private void Collision(LinkedList<GameObject> object){
 		for (int i = 0; i < handler.objects.size(); i++){
@@ -152,9 +149,12 @@ public class Steak extends GameObject {
 					//set to true if the object was a shot
 					this.hit = true;
 					
-					//stop both the Shot and the Schnitzel from being rendered and used for collision detection
-					tempobject.destroy();
-					this.destroy();
+										
+					//stop both the Shot and the Steak from being rendered and used for collision detection
+					Game.getTargetHandlerInstance().removeTarget(this);
+					
+					//call destroy() after delay
+					scheduler.schedule(this::destroy, lifetime, TimeUnit.SECONDS); 
 				}
 			}
 		}
@@ -162,11 +162,13 @@ public class Steak extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
-		//Draw the Schnitzel rotation
-		steakanimation.drawAnimation(g, (int)x -12, (int)y -12);
-		//g.drawImage(texture.schnitzel[0], (int)x, (int)y, null);
-		g.setColor(Color.BLACK);
-		hitbox.draw(g);
+		//create graphics2D object
+		Graphics2D g2d = (Graphics2D) g;
+		//set alpha
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+		//Draw the Steak rotation
+		steakrotation.drawAnimation(g2d, (int)x - 8, (int)y - 8, (int)width + 16, (int)height + 16);
 	}
+	
 
 }

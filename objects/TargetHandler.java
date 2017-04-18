@@ -15,25 +15,20 @@ import window.Handler;
 public class TargetHandler {
 	
 	/**
-	 * 
+	 * target list
 	 */
 	private LinkedList<GameObject> targets;
 	
 	/**
-	 * 
+	 * maximum target count
 	 */
 	private int maxtargets;
 	
-	/**
-	 * 
-	 */
-	private Handler handler;
     
 	
-	public TargetHandler(Handler handler){
+	public TargetHandler(){
 		targets = new LinkedList<GameObject>();
 		this.maxtargets = 5;
-		this.handler = handler;
 	}
 	
 	/**
@@ -41,10 +36,14 @@ public class TargetHandler {
 	 */
 	public void update(){
 		deleteOldTargets();
+		
 	}
 	
 	/**
 	 * spawn random targets at random positions outside the window
+	 */
+	/**
+	 * 
 	 */
 	public void spawnTarget(){
 		if(targets.size() < maxtargets){
@@ -112,7 +111,17 @@ public class TargetHandler {
 //					System.out.println("randVelY: " + randVelY);
 //					System.out.println("gravity: " + gravity);
 					
-					targets.add(new Schnitzel(randX, randY, -255, randVelX, randVelY, 0, ObjectID.Schnitzel));
+					//spawn Schnitzel
+					if (targettype == TargetID.Schnitzel){
+						targets.add(new Schnitzel(randX, randY, -255, randVelX, randVelY, 0, ObjectID.Schnitzel));
+					}
+					
+					//spawn Steak
+					if (targettype == TargetID.Steak){
+						targets.add(new Steak(randX, randY, -255, randVelX, randVelY, 0, ObjectID.Steak));
+					}
+					
+					//add gravity
 					targets.getLast().setGravity(gravity);
 					//targets.add(new Schnitzel(-32, random.nextInt(Game.HEIGHT), -255, 2, random.nextInt(2), 0, handler, ObjectID.Schnitzel));
 				break;	
@@ -144,7 +153,7 @@ public class TargetHandler {
 				tempobject.getY() < -Game.getMainCamera().getY() -64)))){
 					
 					//remove object from Targethandler
-					targets.remove(tempobject);
+					removeTarget(tempobject);
 					
 					//destroy Object
 					tempobject.destroy();
@@ -154,7 +163,20 @@ public class TargetHandler {
 		
 	}
 	
+	/**
+	 * remove Target from TargetHandler
+	 * @param object
+	 */
 	public void removeTarget(GameObject object){
 		targets.remove(object);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public void printTargets() {
+		for(int i = 0; i < targets.size(); i++) {
+			System.out.println(targets.get(i).toString());
+		}
 	}
 }
