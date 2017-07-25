@@ -4,6 +4,10 @@ import java.awt.image.BufferedImage;
 
 import window.BufferedImageLoader;
 
+/**
+ * @author Jonas
+ * Holds all the textures in the game
+ */
 public class Texture {
 
 	//spritesheets
@@ -18,19 +22,32 @@ public class Texture {
 	private BufferedImage steaksheet = null;
 	private BufferedImage forksheet = null;
 	
+	
 	public BufferedImage[] block = new BufferedImage[2];
 	public BufferedImage[] schnitzel = new BufferedImage[31];
 	public BufferedImage[] steak = new BufferedImage[25];
 	public BufferedImage[] fork = new BufferedImage[8];
 	
+	//ketchup is only one texture/not an animation
+	public BufferedImage ketchup = null;
+	
+	/**
+	 * Creates an instance of Texture with all Textures stored in it
+	 */
 	public Texture(){
 		
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try{
+			
+			//animation textures
 			blocksheet = loader.loadImage("/blocksheet.png");
 			schnitzelsheet = loader.loadImage("/schnitzelsheet_new.png");
 			steaksheet = loader.loadImage("/steaksheet_small.png");
 			forksheet = loader.loadImage("/forksheet.png");
+			
+			//single textures
+			ketchup = loader.loadImage("/ketchup.png");
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -39,19 +56,18 @@ public class Texture {
 		steaks = new SpriteSheet(steaksheet);
 		schnitzels = new SpriteSheet(schnitzelsheet);
 		forks = new SpriteSheet(forksheet);
-		
-		getTextures();
-	}
-	
-	private void getTextures(){
+
+		//load textures from the sheet
 		block[0] = blocks.getImage(1, 1, 32, 32);
 		block[1] = blocks.getImage(2, 1, 32, 32);
 		
 		loadTexturesFromSheet(schnitzel, 161, 161, 9, 4, 31, schnitzels);
 		loadTexturesFromSheet(steak, 105, 105, 9, 3, 25, steaks);
 		loadTexturesFromSheet(fork, 128, 128, 8, 2, 8, forks);
-		
 	}
+	
+
+
 	
 	/**
 	 * dynamically load texture from spritesheet

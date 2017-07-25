@@ -85,6 +85,10 @@ public class Game extends Canvas implements Runnable {
 	final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor(); //used to spawn targets every second
 
 	
+	/**
+	 * initialize all static variables
+	 * add Listener controllers
+	 */
 	private void init(){
 		handler = new Handler();
 		targethandler = new TargetHandler();
@@ -111,6 +115,9 @@ public class Game extends Canvas implements Runnable {
 		loadLevel(level); //load level from level texture
 	}
 	
+	/**
+	 * Start the game thread
+	 */
 	public synchronized void start(){
 		
 		if(running){
@@ -122,6 +129,9 @@ public class Game extends Canvas implements Runnable {
 		thread.start();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	public void run(){
 		System.out.println("Main thread has been started!");
 		
@@ -137,6 +147,7 @@ public class Game extends Canvas implements Runnable {
 		int updates = 0;
 		int frames = 0;
 		
+		//actual game loop
 		while(running){
 			
 			switch (GameState.getState()){
@@ -205,6 +216,9 @@ public class Game extends Canvas implements Runnable {
 		
 	}
 	
+	/**
+	 * The Render function
+	 */
 	private void render() {
 		
 		
@@ -230,6 +244,7 @@ public class Game extends Canvas implements Runnable {
 				handler.render(g);
 			}
 			else if (GameState.getState() == GameState.MENU){
+				//render menu
 				menu.render(g);
 			}
 
@@ -238,6 +253,9 @@ public class Game extends Canvas implements Runnable {
 		
 	}
 
+	/**
+	 * The Update function
+	 */
 	private void update() {
 		//pause game if menu
 		if(GameState.getState() == GameState.RUNNING){
@@ -252,6 +270,10 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
+	/**
+	 * Load level out of image
+	 * @param image
+	 */
 	private void loadLevel(BufferedImage image){
 		int w = image.getWidth();
 		int h = image.getHeight();

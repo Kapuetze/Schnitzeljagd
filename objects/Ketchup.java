@@ -55,12 +55,12 @@ public class Ketchup extends GameObject {
 	public Ketchup(float x, float y, float z, ObjectID id) {
 		super(x, y, z, id);
 		this.setGravity(0);
-		this.setWidth(40);
-		this.setHeight(40);
+		this.setWidth(100);
+		this.setHeight(100);
 		this.setDepth(1);
 		
 		
-		this.setHitbox(new HitBox((int)(x), (int)y, (int)z, (int)width, (int)height, (int)depth));
+		this.setHitbox(new HitBox((int)(x) + 30, (int)y, (int)z, (int)width-60, (int)height, (int)depth));
 		this.setLifetime(10);
 		
 		//maxparticles should be 50 to have a smooth fountain
@@ -90,8 +90,8 @@ public class Ketchup extends GameObject {
 	public Ketchup(float x, float y, float z, float velX, float velY, float velZ, ObjectID id) {
 		super(x, y, z, id);
 		this.setGravity(0);
-		this.setWidth(40);
-		this.setHeight(40);
+		this.setWidth(100);
+		this.setHeight(100);
 		this.setDepth(1);
 
 		this.setVelX(velX);
@@ -100,18 +100,14 @@ public class Ketchup extends GameObject {
 		
 		this.setHitbox(new HitBox((int)x, (int)y, (int)z, (int)width, (int)height, (int)depth));
 		this.setLifetime(10);
-		
-		//ketchuphit = new Animation(3, texture.schnitzel);
-		
+				
 		//call destroy() after delay
 		scheduler.schedule(this::readyToDestroy, 5, TimeUnit.SECONDS);
 	}
 
 	@Override
 	public void update(LinkedList<GameObject> object) {
-		
-		hitbox.update(this);
-		
+				
 		//collision detection
 		Collision(object);
 		
@@ -146,11 +142,7 @@ public class Ketchup extends GameObject {
 		//Draw the Schnitzel rotation
 		//ketchuphit.drawAnimation(g, (int)x - 8, (int)y - 8, (int)width + 16, (int)height + 16);
 		//g.drawImage(texture.schnitzel[0], (int)x, (int)y, null);
-		g.setColor(Color.red);
-		g.fillRect((int)(x), (int)(y), (int)width, (int)height);
-		g.setColor(Color.black);
-		g.drawRect((int)(x), (int)(y), (int)width, (int)height);
-		g.setColor(Color.BLUE);
+		g.drawImage(texture.ketchup, (int)x, (int)y, (int)width, (int)height, null);
 		hitbox.draw(g);
 	}
 	

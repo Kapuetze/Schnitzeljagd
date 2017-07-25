@@ -131,11 +131,13 @@ public class Dashboard extends GameObject implements TargetListener{
 		switch(object.getID()){
 		//multiply points for ketchup
 		case Ketchup:
+
+			
+			ketchupMultiplier--;
+			
 			if (ketchupMultiplier == 1) {
 				isKetchup = false;
 			}
-			
-			ketchupMultiplier--;
 			
 			//change multiplier alert
 			ketchupAlert = ketchupAlertOriginal + " x" + Integer.toString(ketchupMultiplier);

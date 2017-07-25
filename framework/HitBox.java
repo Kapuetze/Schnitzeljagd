@@ -1,5 +1,6 @@
 package framework;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 /**
@@ -63,6 +64,7 @@ public class HitBox {
 	 * @param g	Graphics object
 	 */
 	public void draw(Graphics g){
+		g.setColor(Color.PINK);
 		g.drawRect(x, y, width, height);
 	}
 

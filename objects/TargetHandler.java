@@ -42,9 +42,6 @@ public class TargetHandler {
 	/**
 	 * spawn random targets at random positions outside the window
 	 */
-	/**
-	 * 
-	 */
 	public void spawnTarget(){
 		if(targets.size() < maxtargets){
 			Random random = new Random();
