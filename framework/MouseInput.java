@@ -12,10 +12,21 @@ import window.Handler;
 
 public class MouseInput implements MouseListener {
 	
-	private boolean shotready = true;
+	/**
+	 * Time of the last shot in MS
+	 */
+	private long shootTime = 0;
+	
+	/**
+	 * Delay between shots
+	 */
+	private long shootDelay = 700;
 	
 	Handler handler = Game.getHandlerInstance();
 	
+	/**
+	 * initialise mouse input handler
+	 */
 	public MouseInput(){
 
 	}
@@ -38,6 +49,9 @@ public class MouseInput implements MouseListener {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
@@ -45,17 +59,12 @@ public class MouseInput implements MouseListener {
 		switch(GameState.getState()){
 		case RUNNING:
 			
-			shotready = true;
-			
-			if(shotready){
+			//add shot object
+			if(System.currentTimeMillis() - shootTime > shootDelay){
 				new Shot((int)mx - (int)10, (int)my - (int)10, 0, ObjectID.Shot);
-				shotready = false;
+				shootTime = System.currentTimeMillis();
 			}
 			
-			//limit projectiles
-			//int timer = 1000;
-			//ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-			//scheduler.schedule(this::shotready, timer, TimeUnit.MILLISECONDS);
 			
 			break;
 			
@@ -87,8 +96,4 @@ public class MouseInput implements MouseListener {
 		
 	}
 	
-	private void shotready(){
-		shotready = true;
-	}
-
 }

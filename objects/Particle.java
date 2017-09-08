@@ -38,14 +38,15 @@ public class Particle extends GameObject {
  
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param velX
-	 * @param velY
-	 * @param life
-	 * @param size
-	 * @param color
-	 * @param id
+	 * @param x	The x coordinate
+	 * @param y	The x coordinate
+	 * @param velX	The x velocity
+	 * @param velY	The x velocity
+	 * @param gravity	The gravity of the Particle
+	 * @param life	The lifetime of the Particle
+	 * @param size	The size of the Particle
+	 * @param color	The color of the Particle
+	 * @param id	The ObjectID the particle
 	 */
 	public Particle(float x, float y, float velX, float velY, float gravity, float life, float size, Color color, ObjectID id) {
 		super(x, y, 0, id);

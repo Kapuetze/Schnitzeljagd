@@ -20,12 +20,29 @@ import window.Handler;
 public class Shot extends GameObject  {
 	
 	Texture texture = Game.getTextureInstance();
+	
+	/**
+	 * Indicates if the object is flying
+	 */
 	private boolean flying = true;
 	
+	/**
+	 * Indicates if something has been hit
+	 */
 	private boolean hit;
 		
+	/**
+	 * The Animation of the object
+	 */
 	private Animation forkfly;
 	
+	/**
+	 * Creates an instance of a Shot object
+	 * @param x	The x coordinate
+	 * @param y	The y coordinate
+	 * @param z	The z coordinate
+	 * @param id	The ID of the object
+	 */
 	public Shot(float x, float y, float z, ObjectID id) {
 		super(x, y, z, id);
 		this.setWidth(10);

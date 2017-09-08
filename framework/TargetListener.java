@@ -11,12 +11,16 @@ package framework;
  */
 public interface TargetListener {
 
-	
 	/**
-	 * Target has been hit
-	 * @param targetID
+	 * A specific target has been hit
+	 * @param target The target that has been hit
 	 */
 	void targetHit(GameObject target);
+	
+	/**
+	 * A specific target was destroyed
+	 * @param target The target that was destroyed
+	 */
 	void targetDestroyed(GameObject target);
 	
 }

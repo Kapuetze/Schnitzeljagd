@@ -50,7 +50,6 @@ public class Schnitzel extends GameObject {
 	 * @param  x	The x coordinate
 	 * @param  y	The y coordinate
 	 * @param  z	The z coordinate
-	 * @param  handler	The handler instance used to handle collision detection
 	 * @param  id	ObjectID of the created object
 	 * @see	ObjectID
 	 * @see Handler
@@ -78,7 +77,6 @@ public class Schnitzel extends GameObject {
 	 * @param  velX	The velocity in x direction
 	 * @param  velY	The velocity in y direction
 	 * @param  velZ	The velocity in z direction
-	 * @param  handler	The handler instance used to handle collision detection
 	 * @param  id	ObjectID of the created object
 	 * @see	ObjectID
 	 * @see Handler

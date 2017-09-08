@@ -15,7 +15,7 @@ public class BufferedImageLoader {
 	
 	/**
 	 * Load on image from a file path
-	 * @param path
+	 * @param path The path of the image
 	 * @return The loaded image
 	 */
 	public BufferedImage loadImage(String path){

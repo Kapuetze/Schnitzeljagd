@@ -125,9 +125,10 @@ public abstract class GameObject{
 		alive = false;
 	}
 	
-	 /**
-     * add a TargetListener to the Object
-     * @param toAdd
+
+    /**
+     * Adds the TargetListener to the GameObject
+     * @param listener The TargetListener to be added
      */
     public void addListener(TargetListener listener) {
         listeners.add(listener);

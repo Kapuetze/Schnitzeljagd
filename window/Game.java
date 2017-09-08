@@ -81,6 +81,11 @@ public class Game extends Canvas implements Runnable {
 	 */
 	static Menu menu;
 	
+	/**
+	 * global number of frames
+	 */
+	static int FRAMES;
+	
 	
 	final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor(); //used to spawn targets every second
 
@@ -91,10 +96,12 @@ public class Game extends Canvas implements Runnable {
 	 */
 	private void init(){
 		handler = new Handler();
-		targethandler = new TargetHandler();
+		targethandler = new TargetHandler(5);
 		
 		WIDTH = getWidth();
 		HEIGHT = getHeight();
+		
+		FRAMES = 0;
 				
 		texture = new Texture();
 		camera = new Camera(0,0);
@@ -174,6 +181,7 @@ public class Game extends Canvas implements Runnable {
 			
 			render(); //render all frames
 			frames++;
+			FRAMES++;
 					
 			if(System.currentTimeMillis() - timer > 1000){
 				timer += 1000;
@@ -349,6 +357,13 @@ public class Game extends Canvas implements Runnable {
 	 */
 	public boolean isRunning() {
 		return running;
+	}
+	
+	/**
+	 * @return the frames
+	 */
+	public static int getFrames() {
+		return FRAMES;
 	}
 
 	/**

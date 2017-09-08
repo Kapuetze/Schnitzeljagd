@@ -26,13 +26,17 @@ public class TargetHandler {
 	
     
 	
-	public TargetHandler(){
+	/**
+	 * initiate Targethandler 
+	 * @param maxtargets maximum amount of targets that the TargetHandler should handle
+	 */
+	public TargetHandler(int maxtargets){
 		targets = new LinkedList<GameObject>();
-		this.maxtargets = 5;
+		this.maxtargets = maxtargets;
 	}
 	
 	/**
-	 * check to delete targets every update
+	 * check to delete targets with every update
 	 */
 	public void update(){
 		deleteOldTargets();
@@ -54,8 +58,10 @@ public class TargetHandler {
 			int randY, randX, randVelX, randVelY;
 			float gravity;
 			
+			//Spawn targets with random values on a specific side of the screen
 			switch(targettype){
 			
+				//same requirements for Schnitzel and Steak
 				case Schnitzel:
 				case Steak:
 	
@@ -162,7 +168,7 @@ public class TargetHandler {
 	
 	/**
 	 * remove Target from TargetHandler
-	 * @param object
+	 * @param object The GameObject to be removed
 	 */
 	public void removeTarget(GameObject object){
 		targets.remove(object);

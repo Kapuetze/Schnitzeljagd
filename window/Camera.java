@@ -55,7 +55,7 @@ public class Camera {
 
 	/**
 	 * Sets the cameras position on Y-Axis
-	 * @param x The y coordinate
+	 * @param y The y coordinate
 	 */
 	public void setY(float y) {
 		this.y = y;
